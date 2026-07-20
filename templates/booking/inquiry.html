@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load static l10n %}
+{% block title %}{{ t.inquiry_title }} – {{ t.site_name }}{% endblock %}
+{% block content %}
+<section class="wrap page">
+  <h1>{{ t.inquiry_title }}</h1>
+  <p class="lead">{{ t.inquiry_intro }}</p>
+
+  {% if site_settings.calendar_visible %}
+    <div id="calendar"
+         data-availability-url="{% url 'booking:availability' %}"
+         data-lang="{{ lang }}"
+         data-min-nights="{{ min_nights }}">
+      <div class="cal-nav">
+        <button type="button" id="cal-prev" aria-label="&#8592;">&#8592;</button>
+        <button type="button" id="cal-next" aria-label="&#8594;">&#8594;</button>
+      </div>
+      <div class="cal-months" id="cal-months"></div>
+      <p class="cal-legend">
+        <span class="dot free"></span> {{ t.calendar_legend_free }}
+        <span class="dot booked"></span> {{ t.calendar_legend_booked }}
+      </p>
+      <p class="hint">{{ t.calendar_hint }}</p>
+    </div>
+  {% else %}
+    <p class="empty">{{ t.calendar_hidden }}</p>
+  {% endif %}
+
+  {% if site_settings.booking_enabled %}
+  <form method="post" class="inquiry-form" id="inquiry-form"
+        data-prices='{{ price_table_json }}'
+        data-cleaning-fee="{{ site_settings.cleaning_fee|unlocalize }}"
+        data-city-tax="{{ site_settings.city_tax|unlocalize }}">
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+      <div class="form-errors">{{ form.non_field_errors }}</div>
+    {% endif %}
+    {% if form.form_ts.errors or form.website.errors %}
+      <div class="form-errors">{{ form.form_ts.errors }}{{ form.website.errors }}</div>
+    {% endif %}
+
+    <div class="form-grid">
+      <label>{{ t.form_arrival }}
+        {{ form.arrival }}
+        {{ form.arrival.errors }}
+      </label>
+      <label>{{ t.form_departure }}
+        {{ form.departure }}
+        {{ form.departure.errors }}
+      </label>
+      <label>{{ t.form_adults }}
+        {{ form.adults }}
+        {{ form.adults.errors }}
+      </label>
+      <label>{{ t.form_children }}
+        {{ form.children }}
+        {{ form.children.errors }}
+      </label>
+      <label class="span-2">{{ t.form_name }}
+        {{ form.name }}
+        {{ form.name.errors }}
+      </label>
+      <label class="span-2">{{ t.form_email }}
+        {{ form.email }}
+        {{ form.email.errors }}
+      </label>
+      <label class="span-2">{{ t.form_message }}
+        {{ form.message }}
+        {{ form.message.errors }}
+      </label>
+    </div>
+
+    {# Honeypot: für Menschen unsichtbar, Bots füllen es aus #}
+    <div class="hp-field" aria-hidden="true">
+      <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+    </div>
+    <input type="hidden" name="form_ts" value="{{ form_ts }}">
+
+    <div class="price-box" id="price-box" hidden>
+      <strong>{{ t.form_price_label }}</strong>
+      <dl class="price-breakdown">
+        <div><dt>{{ t.form_accommodation }} (<span id="price-nights"></span> {{ t.form_nights }} × <span id="price-night"></span>)</dt><dd id="price-accommodation"></dd></div>
+        <div><dt>{{ t.form_cleaning }}</dt><dd id="price-cleaning"></dd></div>
+        <div><dt>{{ t.form_city_tax }}</dt><dd id="price-tax"></dd></div>
+        <div class="price-total-row"><dt>{{ t.form_estimated_total }}</dt><dd id="price-total"></dd></div>
+      </dl>
+      <small>{{ t.form_price_hint }}</small>
+    </div>
+    <div class="price-box warn" id="combo-warning" hidden></div>
+
+    <button type="submit" class="btn">{{ t.form_submit }}</button>
+  </form>
+  {% else %}
+    <p class="empty">{{ t.booking_disabled }}</p>
+  {% endif %}
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/calendar.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ t.apt_title }} – {{ t.site_name }}{% endblock %}
+{% block content %}
+<section class="wrap page">
+  <h1>{{ t.apt_title }}</h1>
+  <p class="lead">{{ t.apt_intro }}</p>
+
+  <div class="two-col">
+    <div>
+      <h2>{{ t.apt_sleeping_title }}</h2>
+      <ul class="check-list">
+        {% for item in t.apt_sleeping %}<li>{{ item }}</li>{% endfor %}
+      </ul>
+      <div class="card accent">
+        <h2>{{ t.apt_card_title }}</h2>
+        <p>{{ t.apt_card_text }}</p>
+      </div>
+    </div>
+    <div>
+      <h2>{{ t.apt_amenities_title }}</h2>
+      <ul class="check-list">
+        {% for item in t.apt_amenities %}<li>{{ item }}</li>{% endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+{% endblock %}

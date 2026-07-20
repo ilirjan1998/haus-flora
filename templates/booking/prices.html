@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}{{ t.prices_title }} – {{ t.site_name }}{% endblock %}
+{% block content %}
+<section class="wrap page">
+  <h1>{{ t.prices_title }}</h1>
+
+  <table class="price-table">
+    <tbody>
+      <tr><td>{{ t.prices_2a }}</td><td>{{ site_settings.price_2_adults }} € <span>{{ t.prices_per_night }}</span></td></tr>
+      <tr><td>{{ t.prices_3a }}</td><td>{{ site_settings.price_3_adults }} € <span>{{ t.prices_per_night }}</span></td></tr>
+      <tr><td>{{ t.prices_2a1c }}</td><td>{{ site_settings.price_2a_1c }} € <span>{{ t.prices_per_night }}</span></td></tr>
+      <tr><td>{{ t.prices_2a2c }}</td><td>{{ site_settings.price_2a_2c }} € <span>{{ t.prices_per_night }}</span></td></tr>
+      <tr><td>{{ t.prices_1a }} <small>(−{{ site_settings.single_adult_discount|floatformat:"-1" }} % {{ t.prices_1a_note }})</small></td><td></td></tr>
+      <tr class="fee"><td>{{ t.prices_cleaning }}</td><td>{{ site_settings.cleaning_fee }} €</td></tr>
+    </tbody>
+  </table>
+
+  <div class="card">
+    <h2>{{ t.prices_tax_title }}</h2>
+    <p>{{ site_settings.city_tax|floatformat:"-2" }} € {{ t.prices_tax_text }}</p>
+  </div>
+
+  <ul class="check-list">
+    <li>{{ t.prices_min_stay }}: {{ site_settings.min_nights }} {{ t.form_nights }}</li>
+    <li>{{ t.prices_checkin }}</li>
+  </ul>
+
+  <h2>{{ t.prices_cancel_title }}</h2>
+  <ul class="check-list">
+    {% if lang == "en" %}
+      {% for line in site_settings.cancellation_en.splitlines %}{% if line %}<li>{{ line }}</li>{% endif %}{% endfor %}
+    {% else %}
+      {% for line in site_settings.cancellation_de.splitlines %}{% if line %}<li>{{ line }}</li>{% endif %}{% endfor %}
+    {% endif %}
+  </ul>
+</section>
+{% endblock %}

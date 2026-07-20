@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}{{ t.footer_privacy }} – {{ t.site_name }}{% endblock %}
+{% block content %}
+<section class="wrap page legal">
+  <h1>{{ t.footer_privacy }}</h1>
+
+  {% if lang == "en" %}
+  <h2>Controller</h2>
+  <p>[NAME], [ADDRESS], Bodensdorf, Austria – e-mail: markajflore@gmail.com</p>
+  <h2>What data we process</h2>
+  <p>When you send an inquiry via our form, we process the data you enter
+  (name, e-mail address, travel dates, number of guests, message) solely to
+  answer your inquiry and to handle your stay (Art. 6(1)(b) GDPR). The data
+  is stored in our booking system and deleted once it is no longer required.</p>
+  <h2>Cookies</h2>
+  <p>This website only uses technically necessary cookies (session and
+  security cookies). No tracking or analytics services are used.</p>
+  <h2>E-mail</h2>
+  <p>Inquiries are sent to our e-mail account (Google Gmail). Google may
+  process data outside the EU; details: policies.google.com/privacy.</p>
+  <h2>Your rights</h2>
+  <p>You have the right to access, rectification, erasure, restriction and
+  objection, and the right to lodge a complaint with the Austrian Data
+  Protection Authority (dsb.gv.at).</p>
+  {% else %}
+  <h2>Verantwortlicher</h2>
+  <p>[NAME], [ADRESSE], Bodensdorf, Österreich – E-Mail: markajflore@gmail.com</p>
+  <h2>Welche Daten wir verarbeiten</h2>
+  <p>Wenn ihr über unser Formular eine Anfrage sendet, verarbeiten wir die
+  eingegebenen Daten (Name, E-Mail-Adresse, Reisedaten, Personenanzahl,
+  Nachricht) ausschließlich zur Beantwortung der Anfrage und zur Abwicklung
+  des Aufenthalts (Art. 6 Abs. 1 lit. b DSGVO). Die Daten werden in unserem
+  Buchungssystem gespeichert und gelöscht, sobald sie nicht mehr benötigt
+  werden.</p>
+  <h2>Cookies</h2>
+  <p>Diese Website verwendet ausschließlich technisch notwendige Cookies
+  (Session- und Sicherheits-Cookies). Es kommen keine Tracking- oder
+  Analysedienste zum Einsatz.</p>
+  <h2>E-Mail</h2>
+  <p>Anfragen werden an unser E-Mail-Postfach (Google Gmail) zugestellt.
+  Google kann Daten außerhalb der EU verarbeiten; Details:
+  policies.google.com/privacy.</p>
+  <h2>Eure Rechte</h2>
+  <p>Ihr habt das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung
+  und Widerspruch sowie das Recht auf Beschwerde bei der österreichischen
+  Datenschutzbehörde (dsb.gv.at).</p>
+  <p class="hint">Hinweis: Platzhalter in eckigen Klammern vor
+  Veröffentlichung ausfüllen.</p>
+  {% endif %}
+</section>
+{% endblock %}

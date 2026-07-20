@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}{{ t.rules_title }} – {{ t.site_name }}{% endblock %}
+{% block content %}
+<section class="wrap page">
+  <h1>{{ t.rules_title }}</h1>
+  <div class="two-col">
+    <div>
+      <h2>{{ t.rules_house }}</h2>
+      <ul class="check-list">
+        {% if lang == "en" %}
+          {% for line in site_settings.house_rules_en.splitlines %}{% if line %}<li>{{ line }}</li>{% endif %}{% endfor %}
+        {% else %}
+          {% for line in site_settings.house_rules_de.splitlines %}{% if line %}<li>{{ line }}</li>{% endif %}{% endfor %}
+        {% endif %}
+      </ul>
+    </div>
+    <div>
+      <h2>{{ t.rules_pool }}</h2>
+      <ul class="check-list">
+        {% if lang == "en" %}
+          {% for line in site_settings.pool_rules_en.splitlines %}{% if line %}<li>{{ line }}</li>{% endif %}{% endfor %}
+        {% else %}
+          {% for line in site_settings.pool_rules_de.splitlines %}{% if line %}<li>{{ line }}</li>{% endif %}{% endfor %}
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</section>
+{% endblock %}
