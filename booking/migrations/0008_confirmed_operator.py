@@ -1,7 +1,7 @@
 from django.db import migrations, models
 
 NAME = "Flore Markaj"
-ADDRESS = "Jägerweg 20\n9551 Bodensdorf\nÖsterreich"
+ADDRESS = "Bodensdorf am Ossiacher See"
 
 
 def fill_confirmed_operator(apps, schema_editor):
