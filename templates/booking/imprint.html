@@ -1,23 +1,11 @@
 {% extends "base.html" %}
-{% block title %}{{ t.footer_imprint }} – {{ t.site_name }}{% endblock %}
 {% block content %}
 <section class="wrap page legal">
   <h1>{{ t.footer_imprint }}</h1>
-  <p><strong>Haus Flora – Ferienwohnung</strong></p>
-  <p>
-    [VOLLSTÄNDIGER NAME DES BETREIBERS]<br>
-    [STRASSE UND HAUSNUMMER]<br>
-    [PLZ] Bodensdorf, Österreich
-  </p>
-  <p>
-    E-Mail: markajflore@gmail.com<br>
-    Telefon: [TELEFONNUMMER]
-  </p>
-  <p>
-    Unternehmensgegenstand: Privatzimmervermietung / Vermietung einer Ferienwohnung<br>
-    [Falls zutreffend: Gewerbe- oder Registrierungsangaben ergänzen]
-  </p>
-  <p class="hint">Hinweis: Die Angaben in eckigen Klammern müssen vor
-  Veröffentlichung der Website ausgefüllt werden (§ 5 ECG, § 14 UGB).</p>
+  <p><strong>Haus Flora – {% if lang == 'en' %}Holiday apartment{% else %}Ferienwohnung{% endif %}</strong></p>
+  <h2>{% if lang == 'en' %}Accommodation provider{% else %}Vermieterin{% endif %}</h2>
+  <p>{{ site_settings.operator_name }}<br>{{ site_settings.operator_address|linebreaksbr }}</p>
+  <p>E-Mail: <a href="mailto:{{ site_settings.public_email }}">{{ site_settings.public_email }}</a>{% if site_settings.public_phone %}<br>{% if lang == 'en' %}Phone{% else %}Telefon{% endif %}: {{ site_settings.public_phone }}{% endif %}</p>
+  <p>{% if lang == 'en' %}Activity: holiday apartment rental{% else %}Tätigkeit: Vermietung einer Ferienwohnung{% endif %}</p>
 </section>
 {% endblock %}

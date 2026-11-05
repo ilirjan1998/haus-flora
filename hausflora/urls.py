@@ -3,9 +3,12 @@ from django.conf.urls.static import static
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 from django.urls import include, path
+from booking.seo import robots, sitemap
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("robots.txt", robots, name="robots"),
+    path("sitemap.xml", sitemap, name="sitemap"),
 ]
 
 # Alle Gäste-Seiten laufen mit Sprachpräfix: /de/... und /en/...

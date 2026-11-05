@@ -1,0 +1,29 @@
+<svg viewBox="0 0 32 32" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" data-amenity-icon="{{ icon }}">
+{% if icon == 'double-bed' %}
+  <path d="M4 25V7a2 2 0 0 1 2-2h20a2 2 0 0 1 2 2v18M4 17h24v7H4M7 24v4m18-4v4"/><rect x="7" y="9" width="7" height="6" rx="2"/><rect x="18" y="9" width="7" height="6" rx="2"/>
+{% elif icon == 'single-bed' %}
+  <path d="M8 25V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v18M8 17h16v7H8M10 24v4m12-4v4"/><rect x="11" y="9" width="10" height="6" rx="2"/>
+{% elif icon == 'sofa-bed' %}
+  <path d="M7 15V9a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v6M8 26v2m16-2v2M6 20h20M16 6v9"/><path d="M6 14a3 3 0 0 0-3 3v7a2 2 0 0 0 2 2h22a2 2 0 0 0 2-2v-7a3 3 0 0 0-6 0v3H9v-3a3 3 0 0 0-3-3Z"/>
+{% elif icon == 'wifi' %}
+  <path d="M4 12a18 18 0 0 1 24 0M8 16a12 12 0 0 1 16 0M12 20a6 6 0 0 1 8 0"/><circle cx="16" cy="25" r="1.5" fill="currentColor" stroke="none"/>
+{% elif icon == 'cooling' %}
+  <path d="M16 3v26M5 9l22 14M5 23 27 9M12 5l4 4 4-4M12 27l4-4 4 4M5 14l5-2-1-5M23 25l-1-5 5-2M5 18l5 2-1 5M23 7l-1 5 5 2"/>
+{% elif icon == 'kitchen' %}
+  <path d="M6 4v7a4 4 0 0 0 8 0V4M10 4v24M24 4c-4 3-6 7-6 12h6M24 4v24"/>
+{% elif icon == 'shower' %}
+  <path d="M7 27V10a5 5 0 0 1 10 0v2M12 17a5 5 0 0 1 10 0H12ZM13 21v2m4-2v2m4-2v2M13 27v1m4-1v1m4-1v1"/>
+{% elif icon == 'tv' %}
+  <rect x="4" y="8" width="24" height="16" rx="3"/><path d="m12 3 4 5 4-5M11 28h10M16 24v4"/><path d="m14 13 6 3-6 3z" fill="currentColor" stroke="none"/>
+{% elif icon == 'pool' %}
+  <path d="M11 20V7a3 3 0 0 1 6 0M21 20V7a3 3 0 0 1 6 0M11 11h10M11 16h10M3 22c2-2 4-2 6 0s4 2 7 0 5-2 7 0 4 2 6 0M3 27c2-2 4-2 6 0s4 2 7 0 5-2 7 0 4 2 6 0"/>
+{% elif icon == 'parking' %}
+  <rect x="5" y="4" width="22" height="24" rx="5"/><path d="M13 23V10h5a4 4 0 0 1 0 8h-5" stroke-width="2.5"/>
+{% elif icon == 'terrace' %}
+  <path d="M16 4c-6 0-10 4-12 9h24C26 8 22 4 16 4ZM16 4v16M11 21h10M16 21v7M4 18v5h6v5M4 23v5M28 18v5h-6v5M28 23v5"/>
+{% elif icon == 'laundry' %}
+  <rect x="6" y="3" width="20" height="26" rx="3"/><path d="M6 10h20M10 7h4"/><circle cx="22" cy="7" r="1" fill="currentColor" stroke="none"/><circle cx="16" cy="19" r="6"/><path d="M11 19c2-3 5 3 10 0"/>
+{% elif icon == 'linen' %}
+  <path d="M8 5h16a3 3 0 0 1 0 6H8a3 3 0 0 1 0-6ZM8 11H6a4 4 0 0 0 0 8h20a4 4 0 0 0 0-8h-2M6 19a4 4 0 0 0 0 8h20a4 4 0 0 0 0-8M8 8h13M7 15h16M7 23h16"/>
+{% endif %}
+</svg>

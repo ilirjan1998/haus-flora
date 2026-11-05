@@ -10,7 +10,7 @@ Erlaubte Kombinationen (Erwachsene, Kinder):
 
 Alle anderen Kombinationen (z. B. 4 Erwachsene) sind nicht buchbar.
 Die Preisaufschlüsselung enthält Nächtigung, einmalige Endreinigung und
-Ortstaxe für alle Erwachsenen. Die Ortstaxe wird weiterhin vor Ort bezahlt,
+Nächtigungstaxe für Erwachsene und Jugendliche ab 16 Jahren. Sie wird vor Ort bezahlt,
 ist in der angezeigten Gesamtschätzung aber bereits berücksichtigt.
 """
 from decimal import Decimal, ROUND_HALF_UP
@@ -46,20 +46,20 @@ def nightly_price(settings, adults: int, children: int):
     return price.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
 
-def total_price(settings, adults: int, children: int, nights: int):
+def total_price(settings, adults: int, children: int, nights: int, taxable_children: int = 0):
     """Geschätzter Gesamtpreis inklusive Reinigung und Ortstaxe – oder None."""
-    breakdown = price_breakdown(settings, adults, children, nights)
+    breakdown = price_breakdown(settings, adults, children, nights, taxable_children)
     return breakdown["total"] if breakdown else None
 
 
-def price_breakdown(settings, adults: int, children: int, nights: int):
+def price_breakdown(settings, adults: int, children: int, nights: int, taxable_children: int = 0):
     """Liefert die vollständige, centgenaue Preisaufschlüsselung."""
     per_night = nightly_price(settings, adults, children)
-    if per_night is None or nights <= 0:
+    if per_night is None or nights <= 0 or not 0 <= taxable_children <= children:
         return None
     accommodation = (per_night * nights).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
     cleaning = _decimal(settings.cleaning_fee).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
-    city_tax = (_decimal(settings.city_tax) * adults * nights).quantize(
+    city_tax = (_decimal(settings.city_tax) * (adults + taxable_children) * nights).quantize(
         Decimal("0.01"), rounding=ROUND_HALF_UP
     )
     return {

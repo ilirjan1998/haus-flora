@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="wrap page guide-page">
+  <p class="eyebrow">{{ t.guide_eyebrow }}</p><h1>{{ t.arrival_title }}</h1><p class="lead">{{ t.arrival_intro }}</p>
+  
+  <div class="guide-callout arrival-address">
+    <div><h2>Haus Flora · Bodensdorf</h2>
+    {% if site_settings.property_address %}<p>{{ site_settings.property_address }}</p>
+      <a class="btn" href="https://www.google.com/maps/dir/?api=1&amp;destination={{ site_settings.property_address|urlencode }}" target="_blank" rel="noopener noreferrer">{{ t.directions }} ↗</a><small class="external-hint">{{ t.external_hint }}</small>
+    {% else %}<p>{{ t.address_pending }}</p>{% endif %}</div>
+    <p>{{ t.arrival_times }}</p>
+  </div>
+  <div class="guide-grid">
+    <article class="guide-card"><p class="guide-tag">01</p><h2>{{ t.car_title }}</h2><p>{{ t.car_text }}</p><a class="text-link" href="{% if lang == 'en' %}https://www.visitvillach.at/en/{% else %}https://www.visitvillach.at/de/anreise.html{% endif %}" target="_blank" rel="noopener noreferrer">{{ t.official_info }} ↗</a><small class="external-hint">{{ t.external_hint }}</small></article>
+    <article class="guide-card"><p class="guide-tag">02</p><h2>{{ t.rail_title }}</h2><p>{{ t.rail_text }}</p><a class="text-link" href="https://fahrplan.oebb.at/{% if lang == 'en' %}bin/query.exe/en{% endif %}" target="_blank" rel="noopener noreferrer">{{ t.plan_journey }} ↗</a><small class="external-hint">{{ t.external_hint }}</small></article>
+    <article class="guide-card"><p class="guide-tag">03</p><h2>{{ t.air_title }}</h2><p>{{ t.air_text }}</p><a class="text-link" href="https://www.klagenfurt-airport.at/en/home" target="_blank" rel="noopener noreferrer">{{ t.airport_info }} ↗</a><small class="external-hint">{{ t.external_hint }}</small></article>
+  </div>
+  {% if owner_content.arrival_notes %}<h2>{{ t.arrival_last }}</h2>{{ owner_content.arrival_notes|linebreaks }}{% endif %}
+  <p class="guide-note">{{ t.current_note }}</p>
+  {% include "booking/_guide_nav.html" %}
+</section>
+{% endblock %}

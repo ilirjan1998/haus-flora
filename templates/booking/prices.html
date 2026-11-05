@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% block title %}{{ t.prices_title }} – {{ t.site_name }}{% endblock %}
 {% block content %}
 <section class="wrap page">
   <h1>{{ t.prices_title }}</h1>
@@ -7,7 +6,6 @@
   <table class="price-table">
     <tbody>
       <tr><td>{{ t.prices_2a }}</td><td>{{ site_settings.price_2_adults }} € <span>{{ t.prices_per_night }}</span></td></tr>
-      <tr><td>{{ t.prices_3a }}</td><td>{{ site_settings.price_3_adults }} € <span>{{ t.prices_per_night }}</span></td></tr>
       <tr><td>{{ t.prices_2a1c }}</td><td>{{ site_settings.price_2a_1c }} € <span>{{ t.prices_per_night }}</span></td></tr>
       <tr><td>{{ t.prices_2a2c }}</td><td>{{ site_settings.price_2a_2c }} € <span>{{ t.prices_per_night }}</span></td></tr>
       <tr><td>{{ t.prices_1a }} <small>(−{{ site_settings.single_adult_discount|floatformat:"-1" }} % {{ t.prices_1a_note }})</small></td><td></td></tr>
@@ -33,5 +31,6 @@
       {% for line in site_settings.cancellation_de.splitlines %}{% if line %}<li>{{ line }}</li>{% endif %}{% endfor %}
     {% endif %}
   </ul>
+  {% include "booking/_payment.html" %}
 </section>
 {% endblock %}

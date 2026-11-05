@@ -4,6 +4,17 @@ Zweisprachige Website (Deutsch/Englisch) für die Ferienwohnung
 **Haus Flora** in Bodensdorf am Ossiacher See – mit Belegungskalender,
 Anfrageformular mit automatischer Preisberechnung und Adminbereich.
 
+## Einblicke
+
+### Startseite
+![Startseite von Haus Flora](docs/screenshots/startseite.jpg)
+
+### Ferienwohnung
+![Wohnung und Ausstattung](docs/screenshots/wohnung.jpg)
+
+### Preise
+![Preise und Buchungsinformationen](docs/screenshots/preise.jpg)
+
 ## Schnellstart (lokal)
 
 ```bash
@@ -21,6 +32,8 @@ pip install -r requirements.txt
 
 # 4. Datenbank anlegen
 python manage.py migrate
+python manage.py loaddata property_photos
+python manage.py prepare_photo_variants
 
 # 5. Admin-Benutzer anlegen (für /admin/)
 python manage.py createsuperuser
@@ -106,9 +119,14 @@ ein Honeypot-Feld, das nur Bots ausfüllen, und eine Zeitprüfung
 | 2 Erwachsene + 2 Kinder | 180 € |
 | alles andere (z. B. 4 Erwachsene) | nicht buchbar |
 
-Die Preisübersicht rechnet Nächtigung, einmalige Endreinigung und Ortstaxe
-zusammen. Die Ortstaxe wird in der Schätzung berücksichtigt, aber weiterhin
-vor Ort bezahlt. Alle Werte stammen aus dem Adminbereich. Die Logik steht in
+Die Preisübersicht rechnet Nächtigung, einmalige Endreinigung (80 €) und Nächtigungstaxe
+zusammen. Die Nächtigungstaxe beträgt laut Betreiberangabe 4,50 € pro Person
+ab 16 Jahren und Nacht und wird vor Ort bezahlt. Bei Kindern wird zusätzlich
+abgefragt, wie viele bei der Anreise 16 oder 17 Jahre alt sind; unter 16 Jahren
+fällt keine Nächtigungstaxe an. Die Unterkunftspreise bleiben gleich.
+Migration 0004 aktualisiert auch bestehende Einstellungen auf 4,50 €.
+Migration 0005 setzt die Endreinigung auch in bestehenden Einstellungen auf 80 €.
+Alle Werte stammen aus dem Adminbereich. Die Logik steht in
 `booking/pricing.py`.
 
 ## Qualität prüfen
@@ -123,8 +141,7 @@ E-Mail-Versand inklusive korrekter Antwortadresse.
 
 ## Vor dem Livegang unbedingt
 
-1. **Impressum und Datenschutz** ausfüllen: Platzhalter in eckigen
-   Klammern in `templates/booking/imprint.html` und `privacy.html`.
+1. **Impressum und Datenschutz** vervollständigen: Betreibername, Betreiberanschrift und Kontakt im Admin eintragen. Die bestehenden Rechtstextvorlagen müssen weiterhin zu den tatsächlichen Leistungen und dem gewählten Hosting passen.
 2. In der `.env`: `DEBUG=False`, echten `SECRET_KEY` setzen
    (`python -c "import secrets; print(secrets.token_urlsafe(50))"`)
    und die Domain bei `ALLOWED_HOSTS` eintragen.
@@ -150,3 +167,23 @@ haus-flora/
 ├── templates/          # HTML-Seiten
 └── static/             # CSS + Kalender-JavaScript
 ```
+
+
+## Bestehende Installation aktualisieren
+
+Datenbank, `.env` und eigene Medien vorher sichern. Danach die neue Version übernehmen,
+`python manage.py migrate` ausführen und im Produktivbetrieb die statischen Dateien mit
+`python manage.py collectstatic --noinput` aktualisieren. Die Foto-Fixture nur bei einer
+Neuinstallation laden: Sie verwendet feste IDs.
+
+## Technik und Funktionen
+
+Python 3.11+, Django 5.x, SQLite, HTML/CSS und JavaScript. Deutsch/Englisch,
+Foto-Galerie mit Vollbildansicht, Preise, Belegungskalender, Anfrageformular,
+E-Mail-Versand, Adminbereich und optionale Booking.com-iCal-Synchronisation.
+Die Sprache wechselt ohne Sprung zu einem zuvor besuchten Abschnitt.
+Der dezente Pfeil oben mittig führt zurück zum Hauptmenü.
+
+GitHub enthält den Quellcode. Für den tatsächlichen Betrieb wird ein Python-/Django-Host benötigt;
+GitHub Pages kann das Django-Backend nicht ausführen. E-Mail-Versand und Booking.com-Anbindung
+werden über die lokale `.env` konfiguriert.

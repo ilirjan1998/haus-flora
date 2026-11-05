@@ -22,8 +22,10 @@ ERRORS = {
         "past": "Die Anreise darf nicht in der Vergangenheit liegen.",
         "order": "Die Abreise muss nach der Anreise liegen.",
         "min_nights": "Der Mindestaufenthalt beträgt {n} Nächte.",
-        "combo": "Diese Personenkombination ist leider nicht buchbar (max. 3 Erwachsene, max. 4 Personen).",
+        "combo": "Diese Personenkombination ist leider nicht buchbar (3 Erwachsene ohne Kinder oder bis zu 2 Erwachsene mit Kindern).",
         "occupied": "In diesem Zeitraum ist die Wohnung leider schon belegt. Bitte wählt andere Daten.",
+        "tax_age_required": "Bitte wählt aus, wie viele der Kinder 16 oder 17 Jahre alt sind.",
+        "tax_age_count": "Diese Zahl darf nicht größer als die Anzahl der Kinder sein.",
     },
     "en": {
         "honeypot": "Your inquiry could not be processed.",
@@ -31,8 +33,10 @@ ERRORS = {
         "past": "The arrival date must not be in the past.",
         "order": "The departure date must be after the arrival date.",
         "min_nights": "The minimum stay is {n} nights.",
-        "combo": "This combination of guests is not bookable (max. 3 adults, max. 4 guests).",
+        "combo": "This combination of guests is not bookable (3 adults without children or up to 2 adults with children).",
         "occupied": "The apartment is already occupied in this period. Please choose different dates.",
+        "tax_age_required": "Please select how many of the children are aged 16 or 17.",
+        "tax_age_count": "This number cannot exceed the number of children.",
     },
 }
 
@@ -42,6 +46,9 @@ class InquiryForm(forms.Form):
     departure = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
     adults = forms.TypedChoiceField(coerce=int, choices=[(1, "1"), (2, "2"), (3, "3")], initial=2)
     children = forms.TypedChoiceField(coerce=int, choices=[(0, "0"), (1, "1"), (2, "2")], initial=0)
+    taxable_children = forms.TypedChoiceField(coerce=int, required=False, empty_value=None,
+        choices=[("", "Bitte auswählen"), (0, "0"), (1, "1"), (2, "2")],
+        widget=forms.Select(attrs={"aria-describedby": "tax-age-hint"}))
     name = forms.CharField(max_length=120)
     email = forms.EmailField()
     message = forms.CharField(widget=forms.Textarea(attrs={"rows": 4}), required=False)
@@ -54,6 +61,8 @@ class InquiryForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.site_settings = site_settings
         self.err = ERRORS["en"] if lang == "en" else ERRORS["de"]
+        self.fields["taxable_children"].choices = [
+            ("", "Please select" if lang == "en" else "Bitte auswählen"), (0, "0"), (1, "1"), (2, "2")]
         today = timezone.localdate().isoformat()
         self.fields["arrival"].widget.attrs["min"] = today
         self.fields["departure"].widget.attrs["min"] = today
@@ -79,6 +88,15 @@ class InquiryForm(forms.Form):
         departure = data.get("departure")
         adults = data.get("adults")
         children = data.get("children")
+        taxable_children = data.get("taxable_children")
+
+        if children is not None and "taxable_children" not in self.errors:
+            if children == 0 and taxable_children is None:
+                data["taxable_children"] = 0
+            elif taxable_children is None:
+                self.add_error("taxable_children", self.err["tax_age_required"])
+            elif taxable_children > children:
+                self.add_error("taxable_children", self.err["tax_age_count"])
 
         if adults is not None and children is not None:
             if not combo_allowed(adults, children):

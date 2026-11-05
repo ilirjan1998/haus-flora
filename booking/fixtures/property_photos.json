@@ -1,0 +1,314 @@
+[
+  {
+    "model": "booking.photo",
+    "pk": 1,
+    "fields": {
+      "image": "galerie/haus-flora.webp",
+      "title_de": "Haus Flora mit Garten",
+      "title_en": "Haus Flora and garden",
+      "category": "outdoor",
+      "order": 0,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booking.photo",
+    "pk": 2,
+    "fields": {
+      "image": "galerie/schlafzimmer.webp",
+      "title_de": "Schlafzimmer mit Doppelbett",
+      "title_en": "Bedroom with double bed",
+      "category": "apartment",
+      "order": 2,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booking.photo",
+    "pk": 3,
+    "fields": {
+      "image": "galerie/wohnzimmer.webp",
+      "title_de": "Wohnzimmer mit Zugang zum Balkon",
+      "title_en": "Living room with balcony access",
+      "category": "apartment",
+      "order": 3,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booking.photo",
+    "pk": 4,
+    "fields": {
+      "image": "galerie/kueche.webp",
+      "title_de": "Küche mit Herd und Geschirrspüler",
+      "title_en": "Kitchen with cooker and dishwasher",
+      "category": "apartment",
+      "order": 9,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booking.photo",
+    "pk": 5,
+    "fields": {
+      "image": "galerie/balkon.webp",
+      "title_de": "Überdachter Balkon mit Sitzplätzen",
+      "title_en": "Covered balcony with seating",
+      "category": "apartment",
+      "order": 5,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booking.photo",
+    "pk": 6,
+    "fields": {
+      "image": "galerie/garten-pool-ausblick.webp",
+      "title_de": "Blick vom Balkon auf Garten und Pool",
+      "title_en": "Balcony view of the garden and pool",
+      "category": "outdoor",
+      "order": 11,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booking.photo",
+    "pk": 7,
+    "fields": {
+      "image": "galerie/badezimmer.webp",
+      "title_de": "Badezimmer mit Waschtisch",
+      "title_en": "Bathroom with washbasin",
+      "category": "apartment",
+      "order": 7,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booking.photo",
+    "pk": 8,
+    "fields": {
+      "image": "galerie/essplatz.webp",
+      "title_de": "Essplatz in der Küche",
+      "title_en": "Dining area in the kitchen",
+      "category": "apartment",
+      "order": 10,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booking.photo",
+    "pk": 9,
+    "fields": {
+      "image": "galerie/balkontisch.webp",
+      "title_de": "Esstisch auf dem blumengeschmückten Balkon",
+      "title_en": "Dining table on the flower-filled balcony",
+      "category": "apartment",
+      "order": 6,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booking.photo",
+    "pk": 10,
+    "fields": {
+      "image": "galerie/sofa.webp",
+      "title_de": "Sofaecke im Wohnzimmer",
+      "title_en": "Sofa area in the living room",
+      "category": "apartment",
+      "order": 4,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booking.photo",
+    "pk": 11,
+    "fields": {
+      "image": "galerie/dusche.webp",
+      "title_de": "Badezimmer mit Dusche und WC",
+      "title_en": "Bathroom with shower and toilet",
+      "category": "apartment",
+      "order": 8,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booking.photo",
+    "pk": 12,
+    "fields": {
+      "image": "galerie/eingang.webp",
+      "title_de": "Eingang zum Haus Flora",
+      "title_en": "Entrance to Haus Flora",
+      "category": "outdoor",
+      "order": 1,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booking.photo",
+    "pk": 13,
+    "fields": {
+      "image": "galerie/garten.webp",
+      "title_de": "Grüner Garten mit Gartenhaus",
+      "title_en": "Green garden with garden shed",
+      "category": "outdoor",
+      "order": 13,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booking.photo",
+    "pk": 14,
+    "fields": {
+      "image": "galerie/pool.webp",
+      "title_de": "Pool zwischen blühenden Pflanzen",
+      "title_en": "Pool surrounded by flowering plants",
+      "category": "outdoor",
+      "order": 12,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booking.photo",
+    "pk": 15,
+    "fields": {
+      "image": "galerie/rosen.webp",
+      "title_de": "Blühende Rosen im Garten",
+      "title_en": "Blooming roses in the garden",
+      "category": "outdoor",
+      "order": 14,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booking.photo",
+    "pk": 16,
+    "fields": {
+      "image": "galerie/gartengruen.webp",
+      "title_de": "Garten mit Sträuchern und Blumen",
+      "title_en": "Garden with shrubs and flowers",
+      "category": "outdoor",
+      "order": 15,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booking.photo",
+    "pk": 17,
+    "fields": {
+      "image": "galerie/hortensien.webp",
+      "title_de": "Hortensien am Haus",
+      "title_en": "Hydrangeas by the house",
+      "category": "outdoor",
+      "order": 16,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booking.photo",
+    "pk": 18,
+    "fields": {
+      "image": "galerie/seeufer.webp",
+      "title_de": "Seeufer und Berge in der Umgebung",
+      "title_en": "Lakeshore and surrounding mountains",
+      "category": "area",
+      "order": 25,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booking.photo",
+    "pk": 19,
+    "fields": {
+      "image": "galerie/umgebung-ossiacher-see-panorama.webp",
+      "title_de": "Ossiacher See und Gerlitzen aus der Vogelperspektive",
+      "title_en": "Lake Ossiach and Gerlitzen from above",
+      "category": "area",
+      "order": 17,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booking.photo",
+    "pk": 20,
+    "fields": {
+      "image": "galerie/umgebung-ossiacher-see-westbucht.webp",
+      "title_de": "Stille Westbucht mit Blick auf Annenheim und die Gerlitzen",
+      "title_en": "Quiet western bay looking towards Annenheim and Gerlitzen",
+      "category": "area",
+      "order": 18,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booking.photo",
+    "pk": 21,
+    "fields": {
+      "image": "galerie/umgebung-segelboote-ossiacher-see.webp",
+      "title_de": "Segelboote auf dem Ossiacher See bei Annenheim",
+      "title_en": "Sailing boats on Lake Ossiach near Annenheim",
+      "category": "area",
+      "order": 19,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booking.photo",
+    "pk": 22,
+    "fields": {
+      "image": "galerie/umgebung-bodensdorf-schiffsstation.webp",
+      "title_de": "Schiffsstation und Seeufer in Bodensdorf",
+      "title_en": "Boat landing and lakeshore in Bodensdorf",
+      "category": "area",
+      "order": 20,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booking.photo",
+    "pk": 23,
+    "fields": {
+      "image": "galerie/umgebung-bleistaetter-moor.webp",
+      "title_de": "Wasser und grüne Wiesen im Bleistätter Moor",
+      "title_en": "Water and green meadows at Bleistätter Moor",
+      "category": "area",
+      "order": 21,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booking.photo",
+    "pk": 24,
+    "fields": {
+      "image": "galerie/umgebung-burg-landskron-seeblick.webp",
+      "title_de": "Blick von Burg Landskron auf den Ossiacher See",
+      "title_en": "View of Lake Ossiach from Landskron Castle",
+      "category": "area",
+      "order": 22,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booking.photo",
+    "pk": 25,
+    "fields": {
+      "image": "galerie/umgebung-schifffahrt-ossiacher-see.webp",
+      "title_de": "Ausflugsschiff MS Ossiach auf dem See",
+      "title_en": "The passenger boat MS Ossiach on the lake",
+      "category": "area",
+      "order": 23,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booking.photo",
+    "pk": 26,
+    "fields": {
+      "image": "galerie/umgebung-sonnenuntergang-ossiacher-see.webp",
+      "title_de": "Abendstimmung am Ossiacher See in Annenheim",
+      "title_en": "Evening light on Lake Ossiach in Annenheim",
+      "category": "area",
+      "order": 24,
+      "is_active": true
+    }
+  }
+]

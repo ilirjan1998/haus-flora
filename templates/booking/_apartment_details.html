@@ -1,0 +1,21 @@
+<div class="two-col">
+    <div>
+      <h3>{{ t.apt_sleeping_title }}</h3>
+      <ul class="amenities-list sleeping-list" role="list">{% for item in sleeping_places %}
+        <li><span class="amenity-label">{{ item.label }}</span><span class="amenity-symbol" aria-hidden="true">{% include "booking/_amenity_icon.html" with icon=item.icon only %}</span></li>
+{% endfor %}      </ul>
+      <div class="card accent">
+        <h3>{{ t.apt_card_title }}</h3>
+        <p>{{ t.apt_card_text }}</p>
+      </div>
+    </div>
+    <div>
+      <h3>{{ t.apt_amenities_title }}</h3>
+      <ul class="amenities-list" role="list">{% for item in amenities %}
+        <li><span class="amenity-label">{{ item.label }}</span><span class="amenity-symbol" aria-hidden="true">{% include "booking/_amenity_icon.html" with icon=item.icon only %}</span></li>
+{% endfor %}      </ul>
+      <button class="btn amenities-show-all" type="button" aria-haspopup="dialog" aria-controls="amenities-dialog">{% if lang == "en" %}Show all amenities{% else %}Alles anzeigen{% endif %} <span aria-hidden="true">＋</span></button>
+    </div>
+  </div>
+  {% if owner_content.amenities_detail %}<h3>{{ t.extra_amenities }}</h3><ul class="check-list">{% for line in owner_content.amenities_detail.splitlines %}{% if line %}<li>{{ line }}</li>{% endif %}{% endfor %}</ul>{% endif %}
+  {% if site_settings.floor_plan %}<h3>{{ t.floorplan_title }}</h3><a href="{{ site_settings.floor_plan.url }}" target="_blank" rel="noopener"><img class="floor-plan" src="{{ site_settings.floor_plan.url }}" alt="{{ t.floorplan_alt }}" loading="lazy"></a>{% endif %}

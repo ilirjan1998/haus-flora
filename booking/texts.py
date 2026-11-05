@@ -56,7 +56,7 @@ TEXTS = {
         "home_apartment_link": "Die Wohnung ansehen",
         "home_features": [
             {"title": "Pool im Garten", "text": "Erfrischung direkt am Haus – ideal für warme Urlaubstage."},
-            {"title": "Komfort für vier", "text": "Kingsize-Bett, Einzelbett und Schlafsofa bieten flexibel Platz."},
+            {"title": "Komfort für vier", "text": "Kingsize-Bett, Einzelbett und großes Schlafsofa bieten flexibel Platz."},
             {"title": "Komplett ausgestattet", "text": "Küche, Klimaanlage, WLAN, Waschmaschine und Parkplatz inklusive."},
             {"title": "Erlebnis CARD", "text": "Viele regionale Leistungen und Ausflugsziele kostenlos oder ermäßigt."},
         ],
@@ -93,7 +93,7 @@ TEXTS = {
             "klimatisiert und komplett ausgestattet."
         ),
         "apt_sleeping_title": "Schlafplätze",
-        "apt_sleeping": ["1 Kingsize-Bett", "1 Einzelbett", "1 Schlafsofa"],
+        "apt_sleeping": ["1 Kingsize-Bett", "1 Einzelbett", "1 großes Schlafsofa"],
         "apt_amenities_title": "Ausstattung",
         "apt_amenities": [
             "WLAN (kostenlos)",
@@ -110,8 +110,8 @@ TEXTS = {
         "apt_card_title": "Erlebnis CARD inklusive",
         "apt_card_text": (
             "Als unsere Gäste erhaltet ihr die Erlebnis CARD mit vielen "
-            "Ermäßigungen und Gratis-Leistungen rund um den Ossiacher See – "
-            "z. B. für Bergbahnen, Schifffahrt und Strandbäder."
+            "regionalen Angeboten laut aktuellem Programm. "
+            "Bitte prüft Leistungen und Anmeldung für euren Reisezeitraum."
         ),
 
         # Galerie
@@ -132,8 +132,8 @@ TEXTS = {
         "prices_1a": "1 Erwachsener",
         "prices_1a_note": "Rabatt auf den Preis für 2 Erwachsene",
         "prices_cleaning": "Endreinigung (einmalig)",
-        "prices_tax_title": "Ortstaxe",
-        "prices_tax_text": "pro Person ab 18 Jahren und Nacht – wird vor Ort verrechnet.",
+        "prices_tax_title": "Nächtigungstaxe",
+        "prices_tax_text": "pro Person ab 16 Jahren und Nacht – wird vor Ort verrechnet. Kinder unter 16 Jahren zahlen keine Nächtigungstaxe.",
         "prices_min_stay": "Mindestaufenthalt",
         "prices_checkin": "Check-in ab 14:00 Uhr · Check-out bis 10:00 Uhr",
         "prices_cancel_title": "Stornobedingungen",
@@ -153,7 +153,7 @@ TEXTS = {
         "area_tips_title": "Ausflugsziele in der Nähe",
         "area_tips": [
             "Ossiacher See – Baden, Radfahren, Schifffahrt",
-            "Gerlitzen Alpe – Wandern im Sommer, Skifahren im Winter (Kanzelbahn ab Bodensdorf)",
+            "Gerlitzen Alpe – Wandern im Sommer, Skifahren im Winter (Kanzelbahn ab Annenheim)",
             "Stift Ossiach – Kloster und Konzerte am Südufer",
             "Villach – Altstadt, Thermen und Einkaufsmöglichkeiten (ca. 15 Minuten)",
             "Burg Landskron – Adlerflugschau und Affenberg",
@@ -178,8 +178,10 @@ TEXTS = {
         ),
         "form_arrival": "Anreise",
         "form_departure": "Abreise",
-        "form_adults": "Erwachsene",
-        "form_children": "Kinder",
+        "form_adults": "Erwachsene (ab 18 Jahren)",
+        "form_children": "Kinder & Jugendliche (0–17 Jahre)",
+        "form_taxable_children": "Wie viele davon sind 16 oder 17 Jahre alt?",
+        "form_tax_age_hint": "Für die Nächtigungstaxe zählen alle Personen ab 16 Jahren. Bitte gebt das Alter bei der Anreise an.",
         "form_name": "Name",
         "form_email": "E-Mail",
         "form_message": "Nachricht (optional)",
@@ -187,9 +189,9 @@ TEXTS = {
         "form_price_label": "Preisübersicht",
         "form_accommodation": "Nächtigung",
         "form_cleaning": "Endreinigung",
-        "form_city_tax": "Ortstaxe (vor Ort)",
+        "form_city_tax": "Nächtigungstaxe (ab 16 Jahren, vor Ort)",
         "form_estimated_total": "Voraussichtlicher Gesamtpreis",
-        "form_price_hint": "Die Ortstaxe wird bei der Gesamtschätzung berücksichtigt und vor Ort bezahlt.",
+        "form_price_hint": "Die Nächtigungstaxe gilt ab 16 Jahren, ist in der Gesamtschätzung enthalten und wird vor Ort bezahlt.",
         "form_nights": "Nächte",
         "thanks_title": "Danke für eure Anfrage!",
         "thanks_text": (
@@ -244,7 +246,7 @@ TEXTS = {
         "home_apartment_link": "Explore the apartment",
         "home_features": [
             {"title": "Pool in the garden", "text": "Refreshment right by the house – perfect for warm summer days."},
-            {"title": "Comfort for four", "text": "A king-size bed, single bed and sofa bed offer flexible space."},
+            {"title": "Comfort for four", "text": "A king-size bed, single bed and large sofa bed offer flexible space."},
             {"title": "Fully equipped", "text": "Kitchen, air conditioning, Wi-Fi, washing machine and parking included."},
             {"title": "Erlebnis CARD", "text": "Many regional activities and attractions free of charge or discounted."},
         ],
@@ -280,7 +282,7 @@ TEXTS = {
             "air-conditioned and fully equipped."
         ),
         "apt_sleeping_title": "Sleeping arrangements",
-        "apt_sleeping": ["1 king-size bed", "1 single bed", "1 sofa bed"],
+        "apt_sleeping": ["1 king-size bed", "1 single bed", "1 large sofa bed"],
         "apt_amenities_title": "Amenities",
         "apt_amenities": [
             "Free Wi-Fi",
@@ -296,9 +298,9 @@ TEXTS = {
         ],
         "apt_card_title": "Erlebnis CARD included",
         "apt_card_text": (
-            "As our guests you receive the Erlebnis CARD with many discounts "
-            "and free services around Lake Ossiach – e.g. for cable cars, "
-            "boat trips and lidos."
+            "As our guests you receive the Erlebnis CARD with regional activities "
+            "according to the current programme. Check the benefits and "
+            "registration requirements for your travel dates."
         ),
 
         "gallery_title": "Gallery",
@@ -318,7 +320,7 @@ TEXTS = {
         "prices_1a_note": "discount on the price for 2 adults",
         "prices_cleaning": "Final cleaning (one-time)",
         "prices_tax_title": "Local tourist tax",
-        "prices_tax_text": "per person aged 18+ per night – payable on site.",
+        "prices_tax_text": "per person aged 16 or over per night – payable on site. Children under 16 do not pay local tourist tax.",
         "prices_min_stay": "Minimum stay",
         "prices_checkin": "Check-in from 2:00 pm · Check-out until 10:00 am",
         "prices_cancel_title": "Cancellation policy",
@@ -336,7 +338,7 @@ TEXTS = {
         "area_tips_title": "Things to do nearby",
         "area_tips": [
             "Lake Ossiach – swimming, cycling, boat trips",
-            "Gerlitzen Alpe – hiking in summer, skiing in winter (cable car from Bodensdorf)",
+            "Gerlitzen Alpe – hiking in summer, skiing in winter (cable car from Annenheim)",
             "Ossiach Abbey – monastery and concerts on the southern shore",
             "Villach – old town, thermal spas and shopping (approx. 15 minutes)",
             "Landskron Castle – falconry shows and Monkey Mountain",
@@ -360,8 +362,10 @@ TEXTS = {
         ),
         "form_arrival": "Arrival",
         "form_departure": "Departure",
-        "form_adults": "Adults",
-        "form_children": "Children",
+        "form_adults": "Adults (18 and over)",
+        "form_children": "Children & teenagers (ages 0–17)",
+        "form_taxable_children": "How many of them are aged 16 or 17?",
+        "form_tax_age_hint": "Local tourist tax applies to all guests aged 16 or over. Please use their age on arrival.",
         "form_name": "Name",
         "form_email": "E-mail",
         "form_message": "Message (optional)",
@@ -369,9 +373,9 @@ TEXTS = {
         "form_price_label": "Price summary",
         "form_accommodation": "Accommodation",
         "form_cleaning": "Final cleaning",
-        "form_city_tax": "Local tax (payable on site)",
+        "form_city_tax": "Local tax (ages 16+, payable on site)",
         "form_estimated_total": "Estimated total",
-        "form_price_hint": "Local tax is included in the estimate and is payable on site.",
+        "form_price_hint": "Local tax applies from age 16, is included in the estimate and is payable on site.",
         "form_nights": "nights",
         "thanks_title": "Thank you for your inquiry!",
         "thanks_text": (
@@ -384,4 +388,8 @@ TEXTS = {
 
 
 def get_texts(lang):
-    return TEXTS["en"] if lang == "en" else TEXTS["de"]
+    from .guide_texts import GUIDE_TEXTS
+    from .ux_texts import UX_TEXTS
+    from .holiday_texts import HOLIDAY_TEXTS
+    language = "en" if lang == "en" else "de"
+    return {**TEXTS[language], **GUIDE_TEXTS[language], **UX_TEXTS[language], **HOLIDAY_TEXTS[language]}

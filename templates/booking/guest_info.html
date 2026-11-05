@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="wrap page guide-page">
+  <p class="eyebrow">{{ t.nav_guest }}</p><h1>{{ t.faq_title }}</h1><p class="lead">{{ t.faq_intro }}</p>
+  
+  <div class="faq-list">
+    <article class="faq-answer"><h2>{{ t.faq_booking_q }}</h2><p>{{ t.faq_booking_a }}</p></article>
+    <article class="faq-answer"><h2>{{ t.faq_guests_q }}</h2><p>{{ t.faq_guests_a }}</p></article>
+    <article class="faq-answer"><h2>{{ t.faq_times_q }}</h2><p>{{ t.faq_times_a }}</p></article>
+    <article class="faq-answer"><h2>{{ t.faq_stay_q }}</h2><p>{{ site_settings.min_nights }} {{ t.faq_stay_after }}</p></article>
+    <article class="faq-answer"><h2>{{ t.faq_price_q }}</h2><p>{{ t.faq_price_a }}</p><a href="{% url 'booking:home' %}#preise">{{ t.read_prices }}</a></article>
+    <article class="faq-answer"><h2>{{ t.faq_rules_q }}</h2><p>{{ t.faq_rules_a }}</p><a href="{% url 'booking:home' %}#regeln">{{ t.read_rules }}</a></article>
+    <article class="faq-answer"><h2>{{ t.faq_cancel_q }}</h2><p>{{ t.faq_cancel_a }}</p><a href="{% url 'booking:home' %}#preise">{{ t.read_prices }}</a></article>
+    <article class="faq-answer"><h2>{{ t.faq_card_q }}</h2><p>{{ t.faq_card_a }}</p><a href="{% url 'booking:holiday_links' %}">{{ t.nav_links }}</a></article>
+  </div>{% include "booking/_payment.html" %}
+  {% include "booking/_guide_nav.html" %}
+</section>
+{% endblock %}

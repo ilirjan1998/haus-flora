@@ -1,0 +1,10 @@
+<div class="lightbox" id="gallery-lightbox" hidden
+     role="dialog" aria-modal="true" aria-label="{{ t.gallery_lightbox_label }}" data-counter="{{ t.photo_counter }}">
+  <p class="lightbox-count" id="lightbox-count" aria-live="polite"></p>
+  <button class="lightbox-close" type="button" aria-label="{{ t.gallery_close }}">{{ t.photo_close }} <span aria-hidden="true">×</span></button>
+  <button class="lightbox-nav lightbox-prev" type="button" aria-label="{{ t.gallery_previous }}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m15 5-7 7 7 7"/></svg></button>
+  <figure class="lightbox-content">
+    <img id="lightbox-image" src="" alt="">
+  </figure>
+  <button class="lightbox-nav lightbox-next" type="button" aria-label="{{ t.gallery_next }}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9 5 7 7-7 7"/></svg></button>
+</div>

@@ -1,43 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}{{ t.gallery_title }} – {{ t.site_name }}{% endblock %}
 {% block content %}
-<section class="wrap page">
-  <h1>{{ t.gallery_title }}</h1>
-  {% if photos %}
-    <div class="gallery-grid">
-      {% for photo in photos %}
-        <figure>
-          <button class="gallery-item" type="button"
-                  data-full="{{ photo.image.url }}"
-                  data-caption="{% if lang == 'en' and photo.title_en %}{{ photo.title_en }}{% else %}{{ photo.title_de }}{% endif %}"
-                  aria-label="{% if lang == 'en' %}Open image{% else %}Bild öffnen{% endif %}: {% if lang == 'en' and photo.title_en %}{{ photo.title_en }}{% elif photo.title_de %}{{ photo.title_de }}{% else %}{{ t.site_name }}{% endif %}">
-            <img src="{{ photo.image.url }}" alt="{% if lang == 'en' and photo.title_en %}{{ photo.title_en }}{% else %}{{ photo.title_de }}{% endif %}" loading="lazy">
-            <span class="gallery-zoom" aria-hidden="true">＋</span>
-          </button>
-          {% if photo.title_de or photo.title_en %}
-            <figcaption>{% if lang == 'en' and photo.title_en %}{{ photo.title_en }}{% else %}{{ photo.title_de }}{% endif %}</figcaption>
-          {% endif %}
-        </figure>
-      {% endfor %}
-    </div>
-  {% else %}
-    <p class="empty">{{ t.gallery_empty }}</p>
-  {% endif %}
+<section class="wrap page guide-page">
+  <p class="eyebrow">{{ t.guide_eyebrow }}</p><h1>{{ t.gallery_area_title }}</h1>
+  <p class="lead">{{ t.gallery_area_intro }}</p><p>{{ t.gallery_hint }}</p>
+  {% include "booking/_gallery_grid.html" %}
 </section>
-
-<div class="lightbox" id="gallery-lightbox" hidden
-     role="dialog" aria-modal="true" aria-label="{{ t.gallery_lightbox_label }}">
-  <button class="lightbox-close" type="button" aria-label="{{ t.gallery_close }}">×</button>
-  <button class="lightbox-nav lightbox-prev" type="button" aria-label="{{ t.gallery_previous }}">‹</button>
-  <figure class="lightbox-content">
-    <img id="lightbox-image" src="" alt="">
-    <figcaption id="lightbox-caption"></figcaption>
-  </figure>
-  <button class="lightbox-nav lightbox-next" type="button" aria-label="{{ t.gallery_next }}">›</button>
-</div>
+{% include "booking/_gallery_lightbox.html" %}
 {% endblock %}
-
-{% block scripts %}
-<script src="{% static 'js/gallery.js' %}"></script>
-{% endblock %}
+{% block scripts %}<script src="{% static 'js/gallery.js' %}" defer></script>{% endblock %}

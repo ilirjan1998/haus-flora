@@ -1,23 +1,7 @@
 {% extends "base.html" %}
-{% block title %}{{ t.area_title }} – {{ t.site_name }}{% endblock %}
 {% block content %}
-<section class="wrap page">
-  <h1>{{ t.area_title }}</h1>
-  <p class="lead">{{ t.area_intro }}</p>
-
-  <h2>{{ t.area_tips_title }}</h2>
-  <ul class="check-list">
-    {% for tip in t.area_tips %}<li>{{ tip }}</li>{% endfor %}
-  </ul>
-
-  <div class="map-card">
-    <div class="map-pin" aria-hidden="true"></div>
-    <div>
-      <h2>Bodensdorf am Ossiacher See</h2>
-      <p>{{ t.area_map_text }}</p>
-      <a class="btn" href="https://www.openstreetmap.org/?mlat=46.688&amp;mlon=13.976#map=14/46.688/13.976"
-         target="_blank" rel="noopener noreferrer">{{ t.area_map_link }}</a>
-    </div>
-  </div>
+<section class="wrap page guide-page">
+  <p class="eyebrow">{{ t.guide_eyebrow }}</p><h1>{{ t.area_title }}</h1><p class="lead">{{ t.area_intro }}</p>
+  {% include "booking/_guide_cards.html" %}
 </section>
 {% endblock %}

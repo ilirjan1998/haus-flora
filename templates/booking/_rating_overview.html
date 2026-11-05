@@ -1,0 +1,11 @@
+<a class="rating-overview" href="#bewertungen">
+  <span class="rating-overview-source">{% if lang == 'en' %}Selected guest reviews{% else %}Ausgewählte Gästebewertungen{% endif %}</span>
+  <span class="rating-overview-main">
+    <span class="rating-score">{{ selected_booking_reviews.0.score }}<small>/10</small></span>
+    <span class="rating-overview-copy">
+      <strong>{% if lang == 'en' %}Top marks{% else %}Bestnote{% endif %}</strong>
+      <span>{{ selected_booking_reviews|length }} {% if lang == 'en' %}selected reviews{% else %}ausgewählte Bewertungen{% endif %}</span>
+    </span>
+  </span>
+  <span class="rating-overview-action">{% if lang == 'en' %}Read guest reviews{% else %}Bewertungen ansehen{% endif %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14m-5-5 5 5 5-5"/></svg></span>
+</a>

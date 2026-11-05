@@ -7,11 +7,14 @@ Datenmodelle für Haus Flora.
 - SiteSettings:   zentrale Einstellungen (Preise, Regeln, Schalter) –
                   existiert genau einmal ("Singleton")
 """
+from decimal import Decimal
 from django.core.exceptions import ValidationError
 from django.db import models
 
 
 class Photo(models.Model):
+    CATEGORY_CHOICES = [("apartment", "Wohnung"), ("outdoor", "Garten & Pool"), ("area", "Umgebung")]
+    category = models.CharField("Bereich", max_length=20, choices=CATEGORY_CHOICES, default="apartment")
     image = models.ImageField("Bild", upload_to="galerie/")
     title_de = models.CharField("Titel (Deutsch)", max_length=120, blank=True)
     title_en = models.CharField("Titel (Englisch)", max_length=120, blank=True)
@@ -78,6 +81,7 @@ class Inquiry(models.Model):
     departure = models.DateField("Abreise")
     adults = models.PositiveSmallIntegerField("Erwachsene")
     children = models.PositiveSmallIntegerField("Kinder", default=0)
+    taxable_children = models.PositiveSmallIntegerField("Davon 16–17 Jahre", default=0)
     name = models.CharField("Name", max_length=120)
     email = models.EmailField("E-Mail")
     message = models.TextField("Nachricht", blank=True)
@@ -123,10 +127,10 @@ Please shower before swimming.
 No glass bottles in the pool area."""
 
 DEFAULT_CANCELLATION_DE = """Bis 42 Tage vor Anreise: kostenlose Stornierung.
-Ab 42 Tage vor Anreise: 25 % des Gesamtpreises."""
+Ab 42 Tage vor Anreise: 50 % des Gesamtpreises."""
 
 DEFAULT_CANCELLATION_EN = """Up to 42 days before arrival: free cancellation.
-Less than 42 days before arrival: 25% of the total price."""
+Less than 42 days before arrival: 50% of the total price."""
 
 
 class SiteSettings(models.Model):
@@ -161,9 +165,39 @@ class SiteSettings(models.Model):
         "Rabatt für 1 Erwachsenen (%)", max_digits=4, decimal_places=1, default=5,
         help_text="Abschlag auf den Preis für 2 Erwachsene.",
     )
-    cleaning_fee = models.DecimalField("Endreinigung (€)", max_digits=6, decimal_places=2, default=60)
-    city_tax = models.DecimalField("Ortstaxe pro Person ab 18 (€/Nacht)", max_digits=5, decimal_places=2, default=2.70)
+    cleaning_fee = models.DecimalField("Endreinigung (€)", max_digits=6, decimal_places=2, default=80)
+    city_tax = models.DecimalField("Nächtigungstaxe pro Person ab 16 (€/Nacht)", max_digits=5, decimal_places=2, default=Decimal("4.50"))
     min_nights = models.PositiveSmallIntegerField("Mindestaufenthalt (Nächte)", default=5)
+
+    # Only confirmed owner details should be entered here. Blank extras stay hidden.
+    public_email = models.EmailField("Öffentliche E-Mail", default="markajflore@gmail.com")
+    public_phone = models.CharField("Öffentliche Telefonnummer", max_length=40, blank=True)
+    property_address = models.CharField("Adresse der Unterkunft", max_length=250, blank=True,
+        default="Jägerweg 20, 9551 Bodensdorf",
+        help_text="Straße, Hausnummer, PLZ und Ort. Wird für die Anreise angezeigt.")
+    operator_name = models.CharField("Vollständiger Betreibername", max_length=200, blank=True, default="Flore Markaj")
+    operator_address = models.TextField("Betreiberanschrift", blank=True, default="Jägerweg 20\n9551 Bodensdorf\nÖsterreich")
+    host_name = models.CharField("Anzeigename der Gastgeber", max_length=150, default="Familie Markaj")
+    host_photo = models.ImageField("Gastgeberfoto", upload_to="gastgeber/", blank=True)
+    host_intro_de = models.TextField("Vorstellung (Deutsch)", blank=True)
+    host_intro_en = models.TextField("Vorstellung (Englisch)", blank=True)
+    floor_plan = models.ImageField("Grundriss", upload_to="wohnung/", blank=True)
+    amenities_detail_de = models.TextField("Weitere Ausstattung (Deutsch)", blank=True,
+        help_text="Nur tatsächlich vorhandene Ausstattung; ein Punkt pro Zeile.")
+    amenities_detail_en = models.TextField("Weitere Ausstattung (Englisch)", blank=True)
+    bike_service_de = models.TextField("Radservice am Haus (Deutsch)", blank=True,
+        help_text="Nur bestätigte Leistungen, z. B. sicherer Abstellplatz. Leer = keine Zusage.")
+    bike_service_en = models.TextField("Radservice am Haus (Englisch)", blank=True)
+    arrival_notes_de = models.TextField("Letzter Weg zur Unterkunft (Deutsch)", blank=True)
+    arrival_notes_en = models.TextField("Letzter Weg zur Unterkunft (Englisch)", blank=True)
+    payment_methods_de = models.CharField("Zahlungsarten (Deutsch)", max_length=250, blank=True)
+    payment_methods_en = models.CharField("Zahlungsarten (Englisch)", max_length=250, blank=True)
+    deposit_de = models.TextField("Anzahlung (Deutsch)", blank=True)
+    deposit_en = models.TextField("Anzahlung (Englisch)", blank=True)
+    balance_de = models.TextField("Restzahlung (Deutsch)", blank=True)
+    balance_en = models.TextField("Restzahlung (Englisch)", blank=True)
+    security_deposit_de = models.TextField("Kaution (Deutsch)", blank=True)
+    security_deposit_en = models.TextField("Kaution (Englisch)", blank=True)
 
     # Regeln (zweisprachig, im Admin bearbeitbar; eine Zeile = ein Punkt)
     house_rules_de = models.TextField("Hausregeln (Deutsch)", default=DEFAULT_HOUSE_RULES_DE)
@@ -193,3 +227,32 @@ class SiteSettings(models.Model):
         """Liefert z. B. rules("house_rules", "en") als Liste von Zeilen."""
         text = getattr(self, f"{field}_{'en' if lang == 'en' else 'de'}")
         return [line.strip() for line in text.splitlines() if line.strip()]
+
+    def localized(self, field, lang):
+        # Do not silently show German terms on an English booking page.
+        return getattr(self, f"{field}_{'en' if lang == 'en' else 'de'}", "")
+
+
+class GuestReview(models.Model):
+    display_name = models.CharField("Anzeigename", max_length=100)
+    text_de = models.TextField("Gästestimme (Deutsch)")
+    text_en = models.TextField("Gästestimme (Englisch)", blank=True)
+    source_label = models.CharField("Quelle", max_length=150, blank=True)
+    source_url = models.URLField("Link zur Originalbewertung", blank=True)
+    permission_confirmed = models.BooleanField("Veröffentlichung erlaubt", default=False,
+        help_text="Nur echte Bewertungen mit geklärter Erlaubnis veröffentlichen.")
+    is_published = models.BooleanField("Sichtbar", default=False)
+    order = models.PositiveIntegerField("Reihenfolge", default=0)
+
+    class Meta:
+        ordering = ["order", "id"]
+        verbose_name = "Gästestimme"
+        verbose_name_plural = "Gästestimmen"
+
+    def __str__(self):
+        return self.display_name
+
+    def clean(self):
+        super().clean()
+        if self.is_published and not self.permission_confirmed:
+            raise ValidationError("Vor Veröffentlichung bitte die Erlaubnis bestätigen.")

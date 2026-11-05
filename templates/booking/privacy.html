@@ -1,51 +1,105 @@
 {% extends "base.html" %}
-{% block title %}{{ t.footer_privacy }} – {{ t.site_name }}{% endblock %}
 {% block content %}
 <section class="wrap page legal">
-  <h1>{{ t.footer_privacy }}</h1>
-
+  <h1>{% if lang == "en" %}Privacy notice{% else %}Datenschutzerklärung{% endif %}</h1>
   {% if lang == "en" %}
-  <h2>Controller</h2>
-  <p>[NAME], [ADDRESS], Bodensdorf, Austria – e-mail: markajflore@gmail.com</p>
-  <h2>What data we process</h2>
-  <p>When you send an inquiry via our form, we process the data you enter
-  (name, e-mail address, travel dates, number of guests, message) solely to
-  answer your inquiry and to handle your stay (Art. 6(1)(b) GDPR). The data
-  is stored in our booking system and deleted once it is no longer required.</p>
-  <h2>Cookies</h2>
-  <p>This website only uses technically necessary cookies (session and
-  security cookies). No tracking or analytics services are used.</p>
-  <h2>E-mail</h2>
-  <p>Inquiries are sent to our e-mail account (Google Gmail). Google may
-  process data outside the EU; details: policies.google.com/privacy.</p>
-  <h2>Your rights</h2>
-  <p>You have the right to access, rectification, erasure, restriction and
-  objection, and the right to lodge a complaint with the Austrian Data
-  Protection Authority (dsb.gv.at).</p>
+  <p class="hint">Last updated: 19 October 2026 · Draft for the current website. Hosting details and the items listed at the end still need to be confirmed before public launch.</p>
+  <h2>1. Controller</h2>
+  <p>{{ site_settings.operator_name }}<br>{{ site_settings.operator_address|linebreaksbr }}<br>Email: <a href="mailto:{{ site_settings.public_email }}">{{ site_settings.public_email }}</a></p>
+  <p>These notes explain the processing associated with this website and direct inquiries about Haus Flora. You can contact the controller above about data protection.</p>
+
+  <h2>2. Website access and hosting</h2>
+  <p>When you visit the website, your browser sends technical data to the hosting infrastructure, including your IP address, the requested page or file and browser information. Access time, response status and other technical details may also be recorded in server logs. The purposes are to deliver the website, investigate faults and protect it from misuse. The intended legal basis is our legitimate interest in a reliable and secure website under Article 6(1)(f) GDPR.</p>
+  {% if preview_mode %}<p>This private preview is provided through ChatGPT Sites. Its platform access and security functions are separate from the apartment website's own code.</p>{% endif %}
+  <p>The exact hosting provider, recipients, processing locations and log retention periods still need to be documented. We do not promise a specific deletion period for provider logs until it has been verified.</p>
+
+  <h2>3. Holiday inquiries</h2>
+  <p>We use your name, email address, travel dates, number of adults and children, the number of children aged 16–17 and any message you provide to answer your inquiry, prepare an offer and, if agreed, arrange your stay. The legal basis for these pre-contractual steps and the accommodation contract is Article 6(1)(b) GDPR. General correspondence unrelated to a contract is handled on the basis of our legitimate interest in answering messages, Article 6(1)(f) GDPR.</p>
+  {% if preview_mode %}<p>The current inquiry tool prepares an email in your browser. Clicking “Open email with inquiry” passes the entered details to your email app; you send the email yourself there. The website does not submit the form to a booking database. Your email app may save a draft according to its own settings.</p>{% else %}<p>When you submit the inquiry form, the entered details are transferred to our server, stored in the booking system and forwarded to our email inbox. The form is an inquiry, not an automatic booking confirmation.</p>{% endif %}
+  <p>The information marked as required is needed to prepare and answer your inquiry. The message is optional. You do not have to send an inquiry; without the necessary contact and travel details we cannot provide an individual offer. Please do not include medical details, identity document copies or payment card details in the message.</p>
+  <p>The price estimate uses your selected dates and guest numbers. It does not make an automated booking decision or create a personal profile.</p>
+
+  <h2>4. Email and recipients</h2>
+  <p>Our contact address uses Google Gmail. Email addresses, message contents and technical communication data are processed for delivery, storage and replies. Google's privacy notice identifies Google Ireland Limited as the responsible provider for users in the European Economic Area and describes processing on servers in different countries, including outside the EEA.</p>
+  <p><a href="https://policies.google.com/privacy?hl=en" target="_blank" rel="noopener noreferrer">Google privacy notice</a> · <a href="https://policies.google.com/privacy/frameworks?hl=en" target="_blank" rel="noopener noreferrer">Google information on international data transfers</a></p>
+  <p>The account type, applicable agreements and transfer safeguards for our specific email account still need to be checked. We therefore do not claim that a particular data processing agreement or set of standard contractual clauses has already been concluded.</p>
+  <p>Other recipients may include technical service providers needed to operate the website and authorities where disclosure is legally required. Any additional recipients involved in bookings, payments or guest registration must be specified once the actual procedure is confirmed.</p>
+
+  <h2>5. Cookies and content</h2>
+  <p>The apartment website's own code contains no advertising or visitor analytics services. Photos, logos, styles and scripts are served from this website; viewing a logo does not load it from the provider's website.</p>
+  {% if preview_mode %}<p>The static apartment website does not itself set cookies or store inquiry details in local storage. Cookies or other storage used by the hosting platform for access and security still need to be checked separately.</p>{% else %}<p>The Django website uses security functions to protect form submissions. The cookies actually set by the production application and hosting service, including their purposes and durations, must be verified before launch.</p>{% endif %}
+  <p>Non-essential tracking or embedded third-party services are not included in the current website code. If they are added, this notice and the consent mechanism must be adapted before they are activated.</p>
+
+  <h2>6. External links and route planning</h2>
+  <p>Google Maps, ÖBB and tourism providers are linked as external websites. Their content is not embedded. “Plan your route” opens Google Maps with the accommodation address as the destination. Our website does not request your GPS location or pass a starting location to Maps. Any location permission is handled by Google Maps or your browser.</p>
+  <p>When you follow an external link, the receiving provider processes your visit under its own privacy notice.</p>
+
+  <h2>7. Retention and security</h2>
+  <p>Inquiry data should be deleted when the inquiry has been fully resolved and it is no longer needed for an agreed stay, a legal obligation or the establishment, exercise or defence of legal claims. A specific routine for reviewing and deleting messages still needs to be established.</p>
+  <p>Where Austrian tax retention requirements apply, invoices and relevant accounting records generally need to be kept for seven years, calculated from the end of the relevant calendar year. Longer retention may be required in individual cases, for example for ongoing proceedings. This does not mean that every inquiry must be kept for seven years.</p>
+  <p>The website is accessed via HTTPS. Ordinary email is not necessarily encrypted end to end. Please use the contact address to arrange a suitable way to exchange sensitive information.</p>
+
+  <h2>8. Your rights</h2>
+  <p>Subject to the legal conditions, you may request access, rectification, erasure, restriction of processing and data portability. Where processing relies on legitimate interests, you may object for reasons relating to your particular situation. If processing relies on your consent, you may withdraw it at any time for the future; withdrawal does not affect the lawfulness of earlier processing.</p>
+  <p>Send requests to <a href="mailto:{{ site_settings.public_email }}">{{ site_settings.public_email }}</a>. You may also complain to a competent supervisory authority, in particular the <a href="https://dsb.gv.at/" target="_blank" rel="noopener noreferrer">Austrian Data Protection Authority</a>.</p>
+
+  <h2>9. Still to confirm before public launch</h2>
+  <ul>
+    <li>Production hosting provider and address, processing locations, access logs, retention periods and required provider agreements.</li>
+    <li>Gmail account type, relevant provider agreements and safeguards for international transfers.</li>
+    <li>Cookies and other storage actually used by the hosting platform and the published website.</li>
+    <li>Deletion procedures and the data flows for actual bookings, payments, guest registration and booking platforms.</li>
+  </ul>
+  <p>This is a draft based on the currently confirmed information. It will be completed when these details are known.</p>
   {% else %}
-  <h2>Verantwortlicher</h2>
-  <p>[NAME], [ADRESSE], Bodensdorf, Österreich – E-Mail: markajflore@gmail.com</p>
-  <h2>Welche Daten wir verarbeiten</h2>
-  <p>Wenn ihr über unser Formular eine Anfrage sendet, verarbeiten wir die
-  eingegebenen Daten (Name, E-Mail-Adresse, Reisedaten, Personenanzahl,
-  Nachricht) ausschließlich zur Beantwortung der Anfrage und zur Abwicklung
-  des Aufenthalts (Art. 6 Abs. 1 lit. b DSGVO). Die Daten werden in unserem
-  Buchungssystem gespeichert und gelöscht, sobald sie nicht mehr benötigt
-  werden.</p>
-  <h2>Cookies</h2>
-  <p>Diese Website verwendet ausschließlich technisch notwendige Cookies
-  (Session- und Sicherheits-Cookies). Es kommen keine Tracking- oder
-  Analysedienste zum Einsatz.</p>
-  <h2>E-Mail</h2>
-  <p>Anfragen werden an unser E-Mail-Postfach (Google Gmail) zugestellt.
-  Google kann Daten außerhalb der EU verarbeiten; Details:
-  policies.google.com/privacy.</p>
-  <h2>Eure Rechte</h2>
-  <p>Ihr habt das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung
-  und Widerspruch sowie das Recht auf Beschwerde bei der österreichischen
-  Datenschutzbehörde (dsb.gv.at).</p>
-  <p class="hint">Hinweis: Platzhalter in eckigen Klammern vor
-  Veröffentlichung ausfüllen.</p>
+  <p class="hint">Stand: 19. Oktober 2026 · Entwurf für die aktuelle Website. Hostingangaben und die am Ende genannten Punkte müssen vor der öffentlichen Veröffentlichung noch bestätigt werden.</p>
+  <h2>1. Verantwortliche</h2>
+  <p>{{ site_settings.operator_name }}<br>{{ site_settings.operator_address|linebreaksbr }}<br>E-Mail: <a href="mailto:{{ site_settings.public_email }}">{{ site_settings.public_email }}</a></p>
+  <p>Diese Hinweise beschreiben die Verarbeitung im Zusammenhang mit dieser Website und direkten Anfragen zu Haus Flora. Bei Datenschutzfragen könnt ihr euch an die oben genannte Verantwortliche wenden.</p>
+
+  <h2>2. Websiteaufruf und Hosting</h2>
+  <p>Beim Besuch der Website übermittelt euer Browser technische Daten an die Hosting-Infrastruktur, darunter eure IP-Adresse, die angeforderte Seite oder Datei und Browserinformationen. Zugriffszeit, Antwortstatus und weitere technische Angaben können außerdem in Serverprotokollen erfasst werden. Dies dient der Auslieferung der Website, der Fehlerbehebung und dem Schutz vor Missbrauch. Als Rechtsgrundlage ist unser berechtigtes Interesse an einer zuverlässigen und sicheren Website nach Art. 6 Abs. 1 lit. f DSGVO vorgesehen.</p>
+  {% if preview_mode %}<p>Diese private Vorschau wird über ChatGPT Sites bereitgestellt. Die Zugangs- und Sicherheitsfunktionen der Plattform sind vom eigenen Code der Ferienwohnungsseite zu unterscheiden.</p>{% endif %}
+  <p>Der konkrete Hostinganbieter, die Empfänger, Verarbeitungsorte und Speicherfristen für Protokolle müssen noch dokumentiert werden. Eine bestimmte Löschfrist für Anbieterprotokolle wird daher noch nicht zugesagt.</p>
+
+  <h2>3. Urlaubsanfragen</h2>
+  <p>Wir verwenden euren Namen, eure E-Mail-Adresse, Reisedaten, die Anzahl der Erwachsenen und Kinder, die Anzahl der Kinder im Alter von 16–17 Jahren sowie eure freiwillige Nachricht, um eure Anfrage zu beantworten, ein Angebot zu erstellen und gegebenenfalls den Aufenthalt zu vereinbaren. Rechtsgrundlage für diese vorvertraglichen Schritte und den Beherbergungsvertrag ist Art. 6 Abs. 1 lit. b DSGVO. Allgemeine Nachrichten ohne Vertragsbezug bearbeiten wir aufgrund unseres berechtigten Interesses an der Beantwortung von Nachrichten nach Art. 6 Abs. 1 lit. f DSGVO.</p>
+  {% if preview_mode %}<p>Das aktuelle Anfragewerkzeug bereitet eine E-Mail in eurem Browser vor. Mit „E-Mail mit Anfrage öffnen“ werden eure Angaben an eure E-Mail-App übergeben. Den Versand löst ihr dort selbst aus. Die Website übermittelt das Formular nicht an eine Buchungsdatenbank. Eure E-Mail-App kann entsprechend ihren Einstellungen einen Entwurf speichern.</p>{% else %}<p>Beim Absenden des Anfrageformulars werden die eingegebenen Angaben an unseren Server übertragen, im Buchungssystem gespeichert und an unser E-Mail-Postfach weitergeleitet. Das Formular ist eine Anfrage und keine automatische Buchungsbestätigung.</p>{% endif %}
+  <p>Die als erforderlich gekennzeichneten Angaben werden benötigt, um eure Anfrage vorzubereiten und zu beantworten. Die Nachricht ist freiwillig. Ihr müsst keine Anfrage senden; ohne die erforderlichen Kontakt- und Reisedaten können wir kein individuelles Angebot erstellen. Bitte tragt keine Gesundheitsangaben, Ausweiskopien oder Zahlungskartendaten in das Nachrichtenfeld ein.</p>
+  <p>Die Preisvorschau berechnet einen Betrag anhand der gewählten Reisedaten und Personenanzahl. Sie trifft keine automatische Buchungsentscheidung und erstellt kein persönliches Profil.</p>
+
+  <h2>4. E-Mail und Empfänger</h2>
+  <p>Unsere Kontaktadresse nutzt Google Gmail. Für Zustellung, Speicherung und Beantwortung werden E-Mail-Adressen, Nachrichteninhalte und technische Kommunikationsdaten verarbeitet. Googles Datenschutzerklärung nennt für Nutzer im Europäischen Wirtschaftsraum Google Ireland Limited als zuständigen Anbieter und beschreibt die Verarbeitung auf Servern in verschiedenen Ländern, auch außerhalb des EWR.</p>
+  <p><a href="https://policies.google.com/privacy?hl=de" target="_blank" rel="noopener noreferrer">Datenschutzerklärung von Google</a> · <a href="https://policies.google.com/privacy/frameworks?hl=de" target="_blank" rel="noopener noreferrer">Googles Informationen zu internationalen Datenübermittlungen</a></p>
+  <p>Die Kontoart, die geltenden Vereinbarungen und die Übermittlungsgarantien für unser konkretes E-Mail-Konto sind noch zu prüfen. Deshalb behaupten wir nicht, dass ein bestimmter Auftragsverarbeitungsvertrag oder bestimmte Standardvertragsklauseln bereits abgeschlossen wurden.</p>
+  <p>Weitere Empfänger können die zum Websitebetrieb erforderlichen technischen Dienstleister sowie Behörden sein, wenn eine gesetzliche Weitergabepflicht besteht. Zusätzliche Empfänger für Buchungen, Zahlungen oder die Gästemeldung müssen anhand der tatsächlich verwendeten Verfahren ergänzt werden.</p>
+
+  <h2>5. Cookies und Inhalte</h2>
+  <p>Im eigenen Code der Ferienwohnungsseite sind keine Werbe- oder Besucheranalysedienste eingebaut. Fotos, Logos, Gestaltung und Skripte werden von dieser Website geladen. Die Anzeige eines Logos lädt es nicht von der Website des jeweiligen Anbieters nach.</p>
+  {% if preview_mode %}<p>Die statische Ferienwohnungsseite setzt selbst keine Cookies und speichert Anfragedaten nicht im lokalen Browserspeicher. Cookies oder andere Speicherungen der Hostingplattform für Zugang und Sicherheit müssen gesondert geprüft werden.</p>{% else %}<p>Die Django-Website nutzt Sicherheitsfunktionen zum Schutz von Formularübermittlungen. Welche Cookies die produktive Anwendung und der Hostingdienst tatsächlich setzen, einschließlich ihrer Zwecke und Laufzeiten, muss vor dem Start geprüft werden.</p>{% endif %}
+  <p>Nicht notwendiges Tracking und eingebettete Drittanbieterdienste sind im aktuellen Website-Code nicht enthalten. Falls solche Funktionen hinzukommen, müssen diese Erklärung und die Einwilligungslösung vor ihrer Aktivierung angepasst werden.</p>
+
+  <h2>6. Externe Links und Routenplanung</h2>
+  <p>Google Maps, ÖBB und Tourismusangebote sind als externe Websites verlinkt. Ihre Inhalte sind nicht eingebettet. „Route planen“ öffnet Google Maps mit der Unterkunftsadresse als Ziel. Unsere Website fordert keinen GPS-Standort an und übergibt keinen Startort an Maps. Eine Standortfreigabe erfolgt bei Google Maps beziehungsweise im Browser.</p>
+  <p>Wenn ihr einem externen Link folgt, verarbeitet der jeweilige Anbieter euren Besuch nach seiner eigenen Datenschutzerklärung.</p>
+
+  <h2>7. Speicherdauer und Sicherheit</h2>
+  <p>Anfragedaten sollen gelöscht werden, sobald die Anfrage abschließend geklärt ist und sie nicht mehr für einen vereinbarten Aufenthalt, eine gesetzliche Pflicht oder die Geltendmachung, Ausübung oder Verteidigung von Rechtsansprüchen benötigt werden. Ein konkreter Ablauf zur regelmäßigen Prüfung und Löschung der Nachrichten ist noch festzulegen.</p>
+  <p>Soweit österreichische steuerliche Aufbewahrungspflichten greifen, müssen Rechnungen und relevante Buchhaltungsunterlagen grundsätzlich sieben Jahre aufbewahrt werden, gerechnet ab Ende des betreffenden Kalenderjahres. Im Einzelfall kann eine längere Aufbewahrung nötig sein, etwa bei laufenden Verfahren. Das bedeutet nicht, dass jede unverbindliche Anfrage sieben Jahre gespeichert werden muss.</p>
+  <p>Die Website wird über HTTPS aufgerufen. Gewöhnliche E-Mails sind nicht zwingend Ende-zu-Ende-verschlüsselt. Für sensible Informationen könnt ihr über die Kontaktadresse einen geeigneten Übermittlungsweg mit uns vereinbaren.</p>
+
+  <h2>8. Eure Rechte</h2>
+  <p>Unter den gesetzlichen Voraussetzungen könnt ihr Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung und Datenübertragbarkeit verlangen. Bei einer Verarbeitung aufgrund berechtigter Interessen könnt ihr aus Gründen eurer besonderen Situation widersprechen. Soweit eine Verarbeitung auf eurer Einwilligung beruht, könnt ihr diese jederzeit für die Zukunft widerrufen. Die Rechtmäßigkeit der bisherigen Verarbeitung bleibt davon unberührt.</p>
+  <p>Anfragen dazu sendet ihr an <a href="mailto:{{ site_settings.public_email }}">{{ site_settings.public_email }}</a>. Außerdem könnt ihr euch bei einer zuständigen Aufsichtsbehörde beschweren, insbesondere bei der <a href="https://dsb.gv.at/" target="_blank" rel="noopener noreferrer">österreichischen Datenschutzbehörde</a>.</p>
+
+  <h2>9. Vor der öffentlichen Veröffentlichung noch zu bestätigen</h2>
+  <ul>
+    <li>Produktiver Hostinganbieter mit Anschrift, Verarbeitungsorten, Zugriffsprotokollen, Speicherfristen und erforderlichen Anbietervereinbarungen.</li>
+    <li>Art des Gmail-Kontos, passende Anbietervereinbarungen und Absicherung internationaler Datenübermittlungen.</li>
+    <li>Tatsächliche Cookies und andere Speicherungen der Hostingplattform und der veröffentlichten Website.</li>
+    <li>Löschabläufe und Datenflüsse bei echten Buchungen, Zahlungen, Gästemeldungen und Buchungsplattformen.</li>
+  </ul>
+  <p>Dies ist ein Entwurf auf Grundlage der bisher bestätigten Angaben. Sobald diese Einzelheiten feststehen, wird er vervollständigt.</p>
   {% endif %}
 </section>
 {% endblock %}

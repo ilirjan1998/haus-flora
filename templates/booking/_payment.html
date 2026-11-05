@@ -1,0 +1,11 @@
+<section class="guide-callout" id="zahlung">
+  <h3>{{ t.payment_title }}</h3><p>{{ t.payment_intro }}</p>
+  {% if owner_content.payment_methods or owner_content.deposit or owner_content.balance or owner_content.security_deposit %}
+  <dl class="payment-list">
+    {% if owner_content.payment_methods %}<div><dt>{{ t.payment_methods }}</dt><dd>{{ owner_content.payment_methods|linebreaksbr }}</dd></div>{% endif %}
+    {% if owner_content.deposit %}<div><dt>{{ t.payment_deposit }}</dt><dd>{{ owner_content.deposit|linebreaksbr }}</dd></div>{% endif %}
+    {% if owner_content.balance %}<div><dt>{{ t.payment_balance }}</dt><dd>{{ owner_content.balance|linebreaksbr }}</dd></div>{% endif %}
+    {% if owner_content.security_deposit %}<div><dt>{{ t.payment_security }}</dt><dd>{{ owner_content.security_deposit|linebreaksbr }}</dd></div>{% endif %}
+  </dl><p class="hint">{{ t.payment_partial }}</p>
+  {% else %}<p>{{ t.payment_pending }}</p>{% endif %}
+</section>

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="wrap page guide-page">
+  <p class="eyebrow">{{ t.guide_eyebrow }}</p><h1>{{ t.cycling_title }}</h1><p class="lead">{{ t.cycling_intro }}</p>
+  {% include "booking/_guide_cards.html" %}
+  <div class="two-col">
+    <div><h2>{{ t.bike_tips_title }}</h2><ul class="check-list">{% for tip in t.bike_tips %}<li>{{ tip }}</li>{% endfor %}</ul></div>
+    <div class="guide-callout"><h2>{{ t.bike_service_title }}</h2>
+      {% if owner_content.bike_service %}{{ owner_content.bike_service|linebreaks }}{% else %}<p>{{ t.bike_service_fallback }}</p>{% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

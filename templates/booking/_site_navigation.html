@@ -1,0 +1,11 @@
+<nav class="retreat-nav" id="site-navigation" tabindex="-1" aria-label="{{ t.menu_title }}">
+  <div class="retreat-nav-inner">
+    <div class="retreat-main-links">
+      <a href="{% url 'booking:home' %}#wohnung">{% if lang == 'en' %}The apartment{% else %}Die Ferienwohnung{% endif %}</a>
+      <a href="{% url 'booking:home' %}#fotos">{{ t.action_gallery }}</a>
+      <a href="{% url 'booking:home' %}#preise">{{ t.action_prices }}</a>
+      <details class="retreat-discover"><summary>{% if lang == 'en' %}Discover the region{% else %}Region entdecken{% endif %}</summary><div>{% for item in page_navigation %}{% if item.name != 'home' %}<a href="{{ item.url }}">{{ item.label }}</a>{% endif %}{% endfor %}<a href="{% url 'booking:home' %}#gastgeber">{{ t.nav_hosts }}</a><a href="{% url 'booking:home' %}#anreise">{{ t.arrival_title }}</a></div></details>
+    </div>
+    <a class="retreat-book" href="{% url 'booking:home' %}#anfrage">{% if lang == 'en' %}Enquire about your stay{% else %}Aufenthalt anfragen{% endif %} <span aria-hidden="true">↗</span></a>
+  </div>
+</nav>

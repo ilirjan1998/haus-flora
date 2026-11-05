@@ -1,0 +1,19 @@
+{% load image_extras %}
+<div class="gallery-grid property-mosaic" data-gallery-group="property" data-gallery-name="{{ t.property_gallery_title }}" data-preview-count="{{ property_preview_ids|length }}">
+  {% for photo in property_photos %}
+  <figure{% if photo.pk in property_preview_ids %} class="mosaic-preview{% if photo.pk in property_preview_ids|slice:':2' %} mosaic-top{% endif %}"{% endif %}>
+    <button class="gallery-item" type="button" data-category="{{ photo.category }}"
+            data-full="{{ photo.image.url }}" data-caption="{% if lang == 'en' and photo.title_en %}{{ photo.title_en }}{% else %}{{ photo.title_de }}{% endif %}"
+            aria-haspopup="dialog" aria-controls="gallery-lightbox"
+            {% if photo.pk == property_preview_ids|last and property_remaining_count %}data-gallery-open="property" aria-label="{{ t.album_open }} ({{ property_photos|length }})"
+            {% else %}aria-label="{% if lang == 'en' %}Open image{% else %}Bild öffnen{% endif %}: {% if lang == 'en' and photo.title_en %}{{ photo.title_en }}{% else %}{{ photo.title_de }}{% endif %}"{% endif %}>
+      {% responsive_photo photo as image %}
+      <img src="{{ image.src }}" data-fallback-src="{{ photo.image.url }}"{% if image.srcset %} srcset="{{ image.srcset }}" sizes="{% if photo.pk in property_preview_ids|slice:':2' %}(max-width: 1100px) 48vw, 570px{% else %}(max-width: 1100px) 32vw, 380px{% endif %}"{% endif %}{% if image.width %} width="{{ image.width }}" height="{{ image.height }}"{% endif %}
+           alt="{% if lang == 'en' and photo.title_en %}{{ photo.title_en }}{% else %}{{ photo.title_de }}{% endif %}" {% if photo.pk in property_preview_ids %}loading="eager"{% else %}loading="lazy"{% endif %}{% if forloop.first %} fetchpriority="high"{% endif %} decoding="async">
+      {% if photo.pk == property_preview_ids|last and property_remaining_count %}
+      <span class="mosaic-more" aria-hidden="true"><strong>+{{ property_remaining_count }}</strong><span>{{ t.album_open }}</span></span>
+      {% endif %}
+    </button>
+  </figure>
+  {% endfor %}
+</div>

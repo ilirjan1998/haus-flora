@@ -23,7 +23,7 @@ def send_inquiry_mails(inquiry, site_settings):
 
 def _send_owner_mail(inquiry, site_settings):
     price = price_breakdown(
-        site_settings, inquiry.adults, inquiry.children, inquiry.nights
+        site_settings, inquiry.adults, inquiry.children, inquiry.nights, inquiry.taxable_children
     )
     arrival = inquiry.arrival.strftime("%d.%m.%Y")
     departure = inquiry.departure.strftime("%d.%m.%Y")
@@ -36,9 +36,10 @@ def _send_owner_mail(inquiry, site_settings):
         f"Abreise:    {inquiry.departure.strftime('%d.%m.%Y')} ({inquiry.nights} Nächte)\n"
         f"Erwachsene: {inquiry.adults}\n"
         f"Kinder:     {inquiry.children}\n"
+        f"Davon 16–17 Jahre: {inquiry.taxable_children}\n"
         f"Nächtigung: {price['accommodation']} €\n"
         f"Endreinigung: {price['cleaning']} €\n"
-        f"Ortstaxe: {price['city_tax']} € (vor Ort)\n"
+        f"Nächtigungstaxe (ab 16 Jahren): {price['city_tax']} € (vor Ort)\n"
         f"Angezeigter Gesamtpreis: {inquiry.quoted_total} €\n\n"
         f"Nachricht:\n{inquiry.message or '-'}\n\n"
         "Zum Antworten einfach direkt an die E-Mail-Adresse des Gastes schreiben."
@@ -48,7 +49,7 @@ def _send_owner_mail(inquiry, site_settings):
 
 def _send_guest_mail(inquiry, site_settings):
     price = price_breakdown(
-        site_settings, inquiry.adults, inquiry.children, inquiry.nights
+        site_settings, inquiry.adults, inquiry.children, inquiry.nights, inquiry.taxable_children
     )
     if inquiry.language == "en":
         subject = "Haus Flora – we received your inquiry"
@@ -59,9 +60,10 @@ def _send_guest_mail(inquiry, site_settings):
             f"Departure:  {inquiry.departure.strftime('%d.%m.%Y')} ({inquiry.nights} nights)\n"
             f"Adults:     {inquiry.adults}\n"
             f"Children:   {inquiry.children}\n"
+            f"Of whom aged 16–17: {inquiry.taxable_children}\n"
             f"Accommodation: EUR {price['accommodation']}\n"
             f"Final cleaning: EUR {price['cleaning']}\n"
-            f"Local tax: EUR {price['city_tax']} (payable on site)\n"
+            f"Local tax (ages 16+): EUR {price['city_tax']} (payable on site)\n"
             f"Estimated total: EUR {inquiry.quoted_total}\n\n"
             "This is not a binding booking yet – we will get back to you "
             "personally by e-mail as soon as possible to confirm availability "
@@ -77,9 +79,10 @@ def _send_guest_mail(inquiry, site_settings):
             f"Abreise:    {inquiry.departure.strftime('%d.%m.%Y')} ({inquiry.nights} Nächte)\n"
             f"Erwachsene: {inquiry.adults}\n"
             f"Kinder:     {inquiry.children}\n"
+            f"Davon 16–17 Jahre: {inquiry.taxable_children}\n"
             f"Nächtigung: {price['accommodation']} €\n"
             f"Endreinigung: {price['cleaning']} €\n"
-            f"Ortstaxe: {price['city_tax']} € (vor Ort)\n"
+            f"Nächtigungstaxe (ab 16 Jahren): {price['city_tax']} € (vor Ort)\n"
             f"Voraussichtlicher Gesamtpreis: {inquiry.quoted_total} €\n\n"
             "Das ist noch keine verbindliche Buchung – wir melden uns so "
             "schnell wie möglich persönlich per E-Mail, um Verfügbarkeit und "

@@ -10,7 +10,7 @@ from django.utils import timezone
 from .emails import send_inquiry_mails
 from .forms import InquiryForm
 from .ical_sync import parse_ical, sync_booking_calendar
-from .models import BlockedPeriod, Inquiry, SiteSettings
+from .models import BlockedPeriod, Inquiry, SiteSettings, GuestReview, Photo
 from .pricing import price_breakdown, total_price
 
 
@@ -21,10 +21,33 @@ class PricingTests(TestCase):
     def test_total_includes_cleaning_and_city_tax(self):
         price = price_breakdown(self.settings, adults=2, children=0, nights=5)
         self.assertEqual(price["accommodation"], Decimal("750.00"))
-        self.assertEqual(price["cleaning"], Decimal("60.00"))
-        self.assertEqual(price["city_tax"], Decimal("27.00"))
-        self.assertEqual(price["total"], Decimal("837.00"))
-        self.assertEqual(total_price(self.settings, 2, 0, 5), Decimal("837.00"))
+        self.assertEqual(price["cleaning"], Decimal("80.00"))
+        self.assertEqual(price["city_tax"], Decimal("45.00"))
+        self.assertEqual(price["total"], Decimal("875.00"))
+        self.assertEqual(total_price(self.settings, 2, 0, 5), Decimal("875.00"))
+
+    def test_children_under_sixteen_are_exempt_and_older_teenagers_count(self):
+        for teenagers, expected_tax, expected_total in ((0, "45.00", "1025.00"),
+                                                       (1, "67.50", "1047.50"),
+                                                       (2, "90.00", "1070.00")):
+            with self.subTest(teenagers=teenagers):
+                price = price_breakdown(self.settings, 2, 2, 5, teenagers)
+                self.assertEqual(price["accommodation"], Decimal("900.00"))
+                self.assertEqual(price["city_tax"], Decimal(expected_tax))
+                self.assertEqual(price["total"], Decimal(expected_total))
+
+    def test_taxable_children_must_be_part_of_the_party(self):
+        self.assertIsNone(total_price(self.settings, 2, 1, 5, 2))
+        self.assertIsNone(total_price(self.settings, 2, 1, 5, -1))
+
+    def test_three_adults_price_and_tax(self):
+        price = price_breakdown(self.settings, 3, 0, 5)
+        self.assertEqual(price["per_night"], Decimal("175.00"))
+        self.assertEqual(price["accommodation"], Decimal("875.00"))
+        self.assertEqual(price["city_tax"], Decimal("67.50"))
+        self.assertEqual(price["total"], Decimal("1022.50"))
+        self.assertIsNone(total_price(self.settings, 3, 1, 5))
+        self.assertIn((3, "3"), InquiryForm().fields["adults"].choices)
 
     def test_unsupported_guest_combination_has_no_price(self):
         self.assertIsNone(total_price(self.settings, 1, 1, 5))
@@ -117,6 +140,18 @@ class InquiryFormTests(TestCase):
         form = InquiryForm(self.form_data(), site_settings=self.settings, lang="de")
         self.assertTrue(form.is_valid(), form.errors)
 
+    def test_tax_age_selection_is_required_for_children_and_validated(self):
+        for children, teenagers in ((1, ""), (1, 2), (0, 1), (2, -1)):
+            with self.subTest(children=children, teenagers=teenagers):
+                form = InquiryForm(self.form_data(children=children, taxable_children=teenagers),
+                                   site_settings=self.settings, lang="de")
+                self.assertFalse(form.is_valid())
+                self.assertIn("taxable_children", form.errors)
+        for teenagers in (0, 1, 2):
+            form = InquiryForm(self.form_data(children=2, taxable_children=teenagers),
+                               site_settings=self.settings, lang="en")
+            self.assertTrue(form.is_valid(), form.errors)
+
     def test_blocked_dates_are_rejected(self):
         BlockedPeriod.objects.create(
             start_date=self.arrival + timedelta(days=2),
@@ -129,18 +164,8 @@ class InquiryFormTests(TestCase):
 
 class PageTests(TestCase):
     def test_all_public_pages_work_in_both_languages(self):
-        paths = (
-            "",
-            "wohnung/",
-            "galerie/",
-            "preise/",
-            "umgebung/",
-            "regeln/",
-            "anfrage/",
-            "anfrage/danke/",
-            "impressum/",
-            "datenschutz/",
-        )
+        paths = ("", "galerie/area/", "umgebung/", "radfahren/", "urlaubslinks/",
+                 "anfrage/danke/", "impressum/", "datenschutz/")
         for language in ("de", "en"):
             for suffix in paths:
                 path = f"/{language}/{suffix}"
@@ -173,7 +198,7 @@ class EmailTests(TestCase):
             children=0,
             name="Test Gast",
             email="gast@example.com",
-            quoted_total=Decimal("852.00"),
+            quoted_total=Decimal("870.00"),
             language="de",
         )
 
@@ -188,3 +213,51 @@ class EmailTests(TestCase):
             f"{(arrival + timedelta(days=5)).strftime('%d.%m.%Y')}",
         )
         self.assertIn("Endreinigung: 75.00 €", mail.outbox[0].body)
+
+
+class GuestGuideTests(TestCase):
+    def test_payments_do_not_invent_terms_and_use_selected_language(self):
+        settings = SiteSettings.load()
+        response = self.client.get("/de/")
+        self.assertContains(response, "Eure Anfrage löst keine Onlinezahlung aus")
+        settings.payment_methods_de = "Überweisung nach Vereinbarung"
+        settings.deposit_de = "Individuell vereinbarte Anzahlung"
+        settings.save()
+        self.assertContains(self.client.get("/de/"), settings.payment_methods_de)
+        self.assertNotContains(self.client.get("/en/"), settings.payment_methods_de)
+        settings.payment_methods_en = "Bank transfer as agreed"
+        settings.save()
+        self.assertContains(self.client.get("/en/"), settings.payment_methods_en)
+
+    def test_only_approved_real_reviews_are_public(self):
+        review = GuestReview.objects.create(display_name="Test guest", text_de="Review fixture", is_published=True)
+        self.assertNotContains(self.client.get("/de/"), "Review fixture")
+        review.permission_confirmed = True
+        review.save()
+        self.assertContains(self.client.get("/de/"), "Review fixture")
+        self.assertContains(self.client.get("/en/"), "Original review in German")
+
+    def test_main_gallery_and_region_keep_hidden_photos_private(self):
+        Photo.objects.create(image="test-room.jpg", title_de="Room fixture", category="apartment")
+        Photo.objects.create(image="test-garden.jpg", title_de="Garden fixture", category="outdoor")
+        Photo.objects.create(image="test-area.jpg", title_de="Area fixture", category="area")
+        Photo.objects.create(image="test-hidden.jpg", title_de="Hidden fixture", category="area", is_active=False)
+        home = self.client.get("/de/")
+        self.assertContains(home, "Garden fixture")
+        self.assertContains(home, "Room fixture")
+        self.assertNotContains(home, "Hidden fixture")
+        region = self.client.get("/de/galerie/area/")
+        self.assertContains(region, "Area fixture")
+        self.assertNotContains(region, "Room fixture")
+        self.assertNotContains(region, "Garden fixture")
+        self.assertNotContains(region, "Hidden fixture")
+
+    def test_address_and_owner_text_are_escaped(self):
+        settings = SiteSettings.load()
+        settings.property_address = "Testweg 1 & 2, Bodensdorf"
+        settings.host_intro_de = "<script>alert('test')</script>"
+        settings.save()
+        self.assertContains(self.client.get("/de/"), "Testweg 1 &amp; 2")
+        response = self.client.get("/de/")
+        self.assertContains(response, "&lt;script&gt;")
+        self.assertNotContains(response, "<script>alert")

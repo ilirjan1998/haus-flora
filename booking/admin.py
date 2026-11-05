@@ -11,7 +11,7 @@ Hier könnt ihr:
 from django.contrib import admin
 from django.utils.html import format_html
 
-from .models import BlockedPeriod, Inquiry, Photo, SiteSettings
+from .models import BlockedPeriod, Inquiry, Photo, SiteSettings, GuestReview
 
 admin.site.site_header = "Haus Flora – Verwaltung"
 admin.site.site_title = "Haus Flora"
@@ -20,7 +20,8 @@ admin.site.index_title = "Website verwalten"
 
 @admin.register(Photo)
 class PhotoAdmin(admin.ModelAdmin):
-    list_display = ("preview", "title_de", "order", "is_active")
+    list_display = ("preview", "title_de", "category", "order", "is_active")
+    list_filter = ("category", "is_active")
     list_editable = ("order", "is_active")
     list_display_links = ("preview", "title_de")
 
@@ -48,7 +49,7 @@ class BlockedPeriodAdmin(admin.ModelAdmin):
 @admin.register(Inquiry)
 class InquiryAdmin(admin.ModelAdmin):
     list_display = ("created_at", "name", "email", "arrival", "departure",
-                    "adults", "children", "quoted_total")
+                    "adults", "children", "taxable_children", "quoted_total")
     list_filter = ("arrival",)
     search_fields = ("name", "email")
     readonly_fields = [f.name for f in Inquiry._meta.fields]
@@ -60,6 +61,20 @@ class InquiryAdmin(admin.ModelAdmin):
 @admin.register(SiteSettings)
 class SiteSettingsAdmin(admin.ModelAdmin):
     fieldsets = (
+        ("Kontakt & Betreiber", {"fields": (
+            "public_email", "public_phone", "property_address", "operator_name", "operator_address",
+        ), "description": "Betreiberangaben vor Veröffentlichung vervollständigen. Unterkunft und Betreiberanschrift können abweichen."}),
+        ("Gastgeber & Wohnung", {"fields": (
+            "host_name", "host_photo", "host_intro_de", "host_intro_en", "floor_plan",
+            "amenities_detail_de", "amenities_detail_en",
+        )}),
+        ("Anreise & Radservice", {"fields": (
+            "arrival_notes_de", "arrival_notes_en", "bike_service_de", "bike_service_en",
+        )}),
+        ("Zahlungsinformationen", {"fields": (
+            "payment_methods_de", "payment_methods_en", "deposit_de", "deposit_en",
+            "balance_de", "balance_en", "security_deposit_de", "security_deposit_en",
+        ), "description": "Eigene Bedingungen in beiden Sprachen eintragen. Leer = keine pauschale Zahlungszusage; der Gast wird auf die individuelle Klärung verwiesen."}),
         ("Schalter", {"fields": (
             "booking_enabled", "calendar_visible", "booking_calendar_enabled",
         )}),
@@ -83,3 +98,9 @@ class SiteSettingsAdmin(admin.ModelAdmin):
         return False
 
     readonly_fields = ("booking_last_sync_at", "booking_last_sync_error")
+
+
+@admin.register(GuestReview)
+class GuestReviewAdmin(admin.ModelAdmin):
+    list_display = ("display_name", "source_label", "permission_confirmed", "is_published", "order")
+    list_filter = ("is_published", "permission_confirmed")

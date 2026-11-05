@@ -1,0 +1,16 @@
+<dialog id="amenities-dialog" class="amenities-dialog" aria-labelledby="amenities-dialog-title">
+  <div class="amenities-dialog-header">
+    <div><p class="eyebrow">Haus Flora</p><h2 id="amenities-dialog-title">{% if lang == 'en' %}All amenities{% else %}Die gesamte Ausstattung{% endif %}</h2></div>
+    <button type="button" class="amenities-close" autofocus>{% if lang == 'en' %}Close{% else %}Schließen{% endif %} <span aria-hidden="true">×</span></button>
+  </div>
+  <div class="amenities-dialog-body" tabindex="0" role="region" aria-label="{% if lang == 'en' %}Amenities list{% else %}Ausstattungsliste{% endif %}">
+    <div class="amenities-detail-grid">
+      {% for group in amenity_groups %}
+      <section class="amenities-detail-group">
+        <h3><span aria-hidden="true">{% include "booking/_amenity_icon.html" with icon=group.icon only %}</span>{{ group.title }}</h3>
+        <ul>{% for item in group.items %}<li><span aria-hidden="true">✓</span>{{ item }}</li>{% endfor %}</ul>
+      </section>
+      {% endfor %}
+    </div>
+  </div>
+</dialog>

@@ -1,0 +1,39 @@
+{% load image_extras %}
+<div class="gallery-grid{% if compact %} album-grid{% endif %}"{% if compact %} data-gallery-group="{{ group }}" data-gallery-name="{{ album_name }}" data-preview-count="{{ preview_ids|length }}"{% endif %}>
+      {% for photo in photos %}
+        <figure{% if compact and photo.pk in preview_ids %} class="album-preview{% if mobile_preview_ids %}{% if photo.pk not in mobile_preview_ids %} album-preview-desktop{% endif %}{% elif photo.pk not in preview_ids|slice:':3' %} album-preview-desktop{% endif %}"{% endif %}>
+          <button class="gallery-item" type="button"
+                  data-category="{{ photo.category }}"
+                  data-full="{{ photo.image.url }}"
+                  data-caption="{% if lang == 'en' and photo.title_en %}{{ photo.title_en }}{% else %}{{ photo.title_de }}{% endif %}"
+                  aria-label="{% if lang == 'en' %}Open image{% else %}Bild öffnen{% endif %}: {% if lang == 'en' and photo.title_en %}{{ photo.title_en }}{% elif photo.title_de %}{{ photo.title_de }}{% else %}{{ t.site_name }}{% endif %}">
+            {% responsive_photo photo as image %}<img src="{{ image.src }}"{% if image.srcset %} srcset="{{ image.srcset }}" sizes="{% if compact %}(max-width: 700px) 60vw, (max-width: 1100px) 50vw, 540px{% else %}(max-width: 560px) calc(100vw - 32px), (max-width: 850px) 45vw, 360px{% endif %}"{% endif %}{% if image.width %} width="{{ image.width }}" height="{{ image.height }}"{% endif %} alt="{% if lang == 'en' and photo.title_en %}{{ photo.title_en }}{% else %}{{ photo.title_de }}{% endif %}" {% if eager and forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %} decoding="async">
+            <span class="gallery-zoom" aria-hidden="true">{% if not compact %}{{ t.photo_enlarge }} {% endif %}<span>＋</span></span>
+          </button>
+          {% if photo.title_de or photo.title_en %}
+            <figcaption>
+              <span>{% if lang == 'en' and photo.title_en %}{{ photo.title_en }}{% else %}{{ photo.title_de }}{% endif %}</span>
+
+            </figcaption>
+          {% endif %}
+        </figure>
+      {% endfor %}
+    </div>
+{% if compact and photos and not hide_open %}
+<button class="btn album-open" type="button" data-gallery-open="{{ group }}" aria-label="{{ album_name }}: {{ t.album_open }} ({{ photos|length }})" aria-haspopup="dialog" aria-controls="gallery-lightbox"><span>{{ t.album_open }} ({{ photos|length }})</span><span aria-hidden="true">＋</span></button>
+{% endif %}
+
+{% gallery_credits photos as credits %}
+{% if credits %}
+<details class="gallery-credits">
+  <summary>{% if lang == 'en' %}Photo credits{% else %}Bildnachweise{% endif %}</summary>
+  <ul>
+  {% for credit in credits %}
+    <li><span>{% if lang == 'en' %}{{ credit.title_en }}{% else %}{{ credit.title_de }}{% endif %} — {{ credit.author }}</span>
+      <a href="{{ credit.source_url }}" target="_blank" rel="noopener noreferrer">{% if lang == 'en' %}Source{% else %}Quelle{% endif %}</a> ·
+      <a href="{{ credit.license_url }}" target="_blank" rel="noopener noreferrer">{{ credit.license }}</a>
+    </li>
+  {% endfor %}
+  </ul>
+</details>
+{% endif %}

@@ -1,0 +1,11 @@
+<section class="next-topics" aria-labelledby="next-topics-title">
+  <h2 id="next-topics-title">{{ t.next_topics }}</h2>
+  <p class="control-hint">{{ t.next_hint }}</p>
+  <nav class="topic-actions" aria-label="{{ t.next_topics }}">
+    {% for item in guide_navigation %}
+      {% if request.resolver_match.url_name != item.name %}
+      <a href="{{ item.url }}"><span>{{ item.label }}</span><span class="nav-symbol">{% include "booking/_navigation_icon.html" with icon=item.name %}</span></a>
+      {% endif %}
+    {% endfor %}
+  </nav>
+</section>

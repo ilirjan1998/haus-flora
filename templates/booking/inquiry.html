@@ -1,20 +1,22 @@
 {% extends "base.html" %}
 {% load static l10n %}
-{% block title %}{{ t.inquiry_title }} – {{ t.site_name }}{% endblock %}
 {% block content %}
 <section class="wrap page">
   <h1>{{ t.inquiry_title }}</h1>
   <p class="lead">{{ t.inquiry_intro }}</p>
 
+  <h2>{{ t.calendar_title }}</h2>
+  <p>{{ t.calendar_steps }}</p>
   {% if site_settings.calendar_visible %}
     <div id="calendar"
          data-availability-url="{% url 'booking:availability' %}"
          data-lang="{{ lang }}"
          data-min-nights="{{ min_nights }}">
       <div class="cal-nav">
-        <button type="button" id="cal-prev" aria-label="&#8592;">&#8592;</button>
-        <button type="button" id="cal-next" aria-label="&#8594;">&#8594;</button>
+        <button type="button" id="cal-prev" aria-label="{{ t.calendar_previous }}">← {{ t.calendar_previous }}</button>
+        <button type="button" id="cal-next" aria-label="{{ t.calendar_next }}">{{ t.calendar_next }} →</button>
       </div>
+      <p class="calendar-selection" id="cal-selection-hint" role="status" aria-live="polite"></p>
       <div class="cal-months" id="cal-months"></div>
       <p class="cal-legend">
         <span class="dot free"></span> {{ t.calendar_legend_free }}
@@ -27,8 +29,11 @@
   {% endif %}
 
   {% if site_settings.booking_enabled %}
+  <h2>{{ t.form_step_title }}</h2>
+  <p>{{ t.form_step_hint }}</p>
   <form method="post" class="inquiry-form" id="inquiry-form"
         data-prices='{{ price_table_json }}'
+        data-lang="{{ lang }}" data-min-nights="{{ min_nights }}"
         data-cleaning-fee="{{ site_settings.cleaning_fee|unlocalize }}"
         data-city-tax="{{ site_settings.city_tax|unlocalize }}">
     {% csrf_token %}
@@ -89,6 +94,7 @@
     </div>
     <div class="price-box warn" id="combo-warning" hidden></div>
 
+    <p class="hint">{{ t.faq_booking_a }} <a href="{% url 'booking:home' %}#zahlung">{{ t.payment_title }}</a> · <a href="{% url 'booking:privacy' %}">{{ t.footer_privacy }}</a></p>
     <button type="submit" class="btn">{{ t.form_submit }}</button>
   </form>
   {% else %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<section class="wrap page guide-page">
+  <p class="eyebrow">Haus Flora · Bodensdorf</p><h1>{{ t.nav_hosts }}</h1>
+  
+  <div class="host-intro with-photo">
+    {% if site_settings.host_photo %}
+    <img class="host-portrait" src="{{ site_settings.host_photo.url }}" alt="{{ t.nav_hosts }}: {{ site_settings.host_name }}" decoding="async">
+    {% else %}
+    <img class="host-portrait" src="{% static 'images/hosts/familie-markaj-800.webp' %}" srcset="{% static 'images/hosts/familie-markaj-400.webp' %} 400w, {% static 'images/hosts/familie-markaj-800.webp' %} 800w" sizes="(max-width: 560px) 85vw, 400px" width="800" height="800" alt="{{ t.nav_hosts }}: {{ site_settings.host_name }}" decoding="async">
+    {% endif %}
+    <div><h2>{{ site_settings.host_name }}</h2>
+    {% if owner_content.host_intro %}{{ owner_content.host_intro|linebreaks }}{% else %}<p class="lead">{{ t.hosts_intro }}</p>{% endif %}
+    <a class="btn" href="mailto:{{ site_settings.public_email }}">{{ t.email_us }} →</a><p class="email-help">{{ t.email_app_hint }} <a href="mailto:{{ site_settings.public_email }}">{{ site_settings.public_email }}</a></p></div>
+  </div>
+  {% if reviews %}<section class="reviews"><h2>{{ t.reviews_title }}</h2><div class="guide-grid">
+    {% for review in reviews %}<figure class="guide-card review-card">
+      {% if lang == 'en' and not review.text_en %}<p class="guide-tag">{{ t.original_language }}</p>{% endif %}
+      <blockquote{% if lang == 'en' and not review.text_en %} lang="de"{% endif %}>{% if lang == 'en' and review.text_en %}{{ review.text_en|linebreaks }}{% else %}{{ review.text_de|linebreaks }}{% endif %}</blockquote>
+      <figcaption>{{ review.display_name }}{% if review.source_label %} · {{ review.source_label }}{% endif %}</figcaption>
+      {% if review.source_url %}<a href="{{ review.source_url }}" target="_blank" rel="noopener noreferrer">{{ t.review_original }} ↗</a>{% endif %}
+    </figure>{% endfor %}
+  </div></section>{% endif %}
+  {% include "booking/_guide_nav.html" %}
+</section>
+{% endblock %}

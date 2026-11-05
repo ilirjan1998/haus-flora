@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="wrap page guide-page">
+  <p class="eyebrow">{{ t.guide_eyebrow }}</p><h1>{{ t.links_title }}</h1><p class="lead">{{ t.links_intro }}</p>
+  {% include "booking/_guide_cards.html" %}
+  <p class="hint">{{ t.links_note }}</p>
+</section>
+{% endblock %}

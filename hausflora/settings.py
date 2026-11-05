@@ -124,3 +124,8 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER or "haus-flora@localhost"
 # ---------------------------------------------------------------------------
 BOOKING_ICAL_URL = os.environ.get("BOOKING_ICAL_URL", "").strip()
 BOOKING_ICAL_SYNC_MINUTES = int(os.environ.get("BOOKING_ICAL_SYNC_MINUTES", "30"))
+
+# Search visibility is enabled only after the public launch.
+SITE_URL = os.environ.get("SITE_URL", "").strip()
+SEO_INDEXABLE = os.environ.get("SEO_INDEXABLE", "False").lower() == "true"
+GOOGLE_SITE_VERIFICATION = os.environ.get("GOOGLE_SITE_VERIFICATION", "").strip()

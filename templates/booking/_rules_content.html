@@ -1,0 +1,22 @@
+<div class="two-col">
+    <div>
+      <h3>{{ t.rules_house }}</h3>
+      <ul class="check-list">
+        {% if lang == "en" %}
+          {% for line in site_settings.house_rules_en.splitlines %}{% if line %}<li>{{ line }}</li>{% endif %}{% endfor %}
+        {% else %}
+          {% for line in site_settings.house_rules_de.splitlines %}{% if line %}<li>{{ line }}</li>{% endif %}{% endfor %}
+        {% endif %}
+      </ul>
+    </div>
+    <div>
+      <h3>{{ t.rules_pool }}</h3>
+      <ul class="check-list">
+        {% if lang == "en" %}
+          {% for line in site_settings.pool_rules_en.splitlines %}{% if line %}<li>{{ line }}</li>{% endif %}{% endfor %}
+        {% else %}
+          {% for line in site_settings.pool_rules_de.splitlines %}{% if line %}<li>{{ line }}</li>{% endif %}{% endfor %}
+        {% endif %}
+      </ul>
+    </div>
+  </div>

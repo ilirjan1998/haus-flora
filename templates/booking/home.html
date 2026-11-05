@@ -1,104 +1,85 @@
 {% extends "base.html" %}
-{% block meta_description %}{{ t.home_meta }}{% endblock %}
+{% load static image_extras %}
 {% block content %}
-<section class="hero{% if hero_photo %} hero-has-photo{% endif %}">
-  {% if hero_photo %}
-    <img class="hero-img" src="{{ hero_photo.image.url }}" alt="{% if lang == 'en' and hero_photo.title_en %}{{ hero_photo.title_en }}{% elif hero_photo.title_de %}{{ hero_photo.title_de }}{% else %}{{ t.site_name }}{% endif %}">
-  {% endif %}
-  <div class="hero-overlay"></div>
-  <div class="wrap hero-content">
-    <p class="eyebrow hero-eyebrow">{{ t.home_eyebrow }}</p>
-    <h1>{{ t.home_title }}</h1>
-    <p class="lead">{{ t.home_intro }}</p>
-    <div class="hero-actions">
-      <a class="btn btn-light" href="{% url 'booking:inquiry' %}">{{ t.home_cta }}</a>
-      <a class="btn btn-ghost" href="{% url 'booking:apartment' %}">{{ t.home_secondary_cta }}</a>
-    </div>
-    <div class="hero-note">
-      <span>{{ t.home_from }}</span>
-      <strong>{{ site_settings.price_2_adults|floatformat:"0" }} €</strong>
-      <span>{{ t.prices_per_night }}</span>
-    </div>
+<section class="retreat-hero" id="start">
+  {% if hero_photo %}<img class="retreat-hero-photo" src="{{ hero_photo.image.url }}" alt="{% if lang == 'en' %}Haus Flora with its garden in Bodensdorf{% else %}Haus Flora mit Garten in Bodensdorf{% endif %}" fetchpriority="high" width="1200" height="900">{% endif %}
+  <div class="retreat-hero-content">
+    <p class="eyebrow">BODENSDORF · OSSIACHER SEE · KÄRNTEN</p>
+    <h1>{% if lang == 'en' %}A place to arrive.<br><em>A moment to unwind.</em>{% else %}Ankommen.<br><em>Und aufatmen.</em>{% endif %}</h1>
+    <p>{% if lang == 'en' %}Your holiday apartment at Lake Ossiach.<br>74 m² of space for your time together.{% else %}Eure Ferienwohnung am Ossiacher See.<br>74 m² Freiraum für eure gemeinsame Auszeit.{% endif %}</p>
+    <a class="btn retreat-hero-button" href="#anfrage">{% if lang == 'en' %}Plan your stay{% else %}Auszeit planen{% endif %} <span aria-hidden="true">↗</span></a>
   </div>
+  <a class="retreat-photo-link" href="#fotos">{% if lang == 'en' %}Explore the apartment{% else %}Die Ferienwohnung entdecken{% endif %} ↓</a>
+</section>
+<section class="wrap retreat-intro">
+  <div><p class="eyebrow">{{ t.holiday_kicker }}</p><h2>{% if lang == 'en' %}A little closer to nature.<br>A little more time for you.{% else %}Der Natur ein Stück näher.<br>Dem Alltag ein Stück ferner.{% endif %}</h2></div>
+  <div><p>{{ t.holiday_intro }}</p><a class="retreat-inline-link" href="#wohnung">{% if lang == 'en' %}Get to know your holiday home{% else %}Euer Zuhause auf Zeit kennenlernen{% endif %} →</a></div>
+</section>
+<section class="wrap retreat-gallery" id="fotos" tabindex="-1" aria-label="{{ t.property_gallery_title }}">
+  <span id="wohnungsfotos" class="gallery-anchor" aria-hidden="true"></span><span id="garten" class="gallery-anchor" aria-hidden="true"></span>
+  <div class="stay-heading"><div><p class="eyebrow">{% if lang == 'en' %}A LOOK INSIDE{% else %}EINBLICKE{% endif %}</p><h2>{% if lang == 'en' %}Room for your holiday{% else %}Raum für euren Urlaub{% endif %}</h2></div><a class="retreat-inline-link" href="#wohnung">{{ t.apt_title }} →</a></div>
+  {% include "booking/_property_gallery.html" %}
+</section>
+<div class="wrap holiday-facts" aria-label="{% if lang == 'en' %}At a glance{% else %}Auf einen Blick{% endif %}">
+  <div><strong>74 m²</strong><span>{{ t.holiday_space }}</span></div>
+  <div><strong>4</strong><span>{{ t.holiday_guests }}</span></div>
+  <div><strong>{{ site_settings.min_nights }}</strong><span>{{ t.holiday_nights }}</span></div>
+  <div><strong>14:00</strong><span>{% if lang == 'en' %}Check-in from{% else %}Check-in ab{% endif %}</span></div>
+</div>
+
+
+<section class="wrap stay-section" id="wohnung" tabindex="-1" aria-labelledby="wohnung-title">
+  <div class="stay-heading"><div><p class="eyebrow">{{ t.holiday_stay_kicker }}</p><h2 id="wohnung-title">{{ t.apt_title }}</h2></div></div>
+  <p class="lead">{{ t.apt_intro }}</p>
+  {% include "booking/_apartment_details.html" %}
 </section>
 
-<section class="wrap facts">
-  <div class="fact"><strong>74 m²</strong><span>{{ t.home_fact_size_label }}</span></div>
-  <div class="fact"><strong>4</strong><span>{{ t.home_fact_guests_label }}</span></div>
-  <div class="fact"><strong>{{ site_settings.min_nights }}</strong><span>{{ t.home_fact_nights_label }}</span></div>
-  <div class="fact"><strong>14:00</strong><span>{{ t.home_fact_checkin_label }}</span></div>
+<section class="wrap stay-section" id="preise" tabindex="-1" aria-labelledby="preise-title">
+  <div class="stay-heading"><div><p class="eyebrow">{{ t.holiday_plan_kicker }}</p><h2 id="preise-title">{{ t.prices_title }}</h2></div></div>
+  {% include "booking/_prices_content.html" %}
 </section>
 
-<section class="wrap home-section home-intro">
-  <div class="section-copy">
-    <p class="eyebrow">{{ t.home_apartment_eyebrow }}</p>
-    <h2>{{ t.home_apartment_title }}</h2>
-    <p class="section-lead">{{ t.home_apartment_text }}</p>
-    <a class="text-link" href="{% url 'booking:apartment' %}">{{ t.home_apartment_link }} <span aria-hidden="true">→</span></a>
-  </div>
-  <div class="feature-grid">
-    {% for feature in t.home_features %}
-      <article class="feature-card">
-        <span class="feature-number">0{{ forloop.counter }}</span>
-        <h3>{{ feature.title }}</h3>
-        <p>{{ feature.text }}</p>
-      </article>
-    {% endfor %}
-  </div>
+<section class="wrap stay-section stay-inquiry" id="anfrage" tabindex="-1" aria-labelledby="anfrage-title">
+  <div class="stay-heading"><div><p class="eyebrow">{{ t.holiday_final_kicker }}</p><h2 id="anfrage-title">{{ t.inquiry_title }}</h2></div></div>
+  <p class="lead">{% if preview_mode %}{{ t.email_inquiry_intro }}{% else %}{{ t.inquiry_intro }}{% endif %}</p>
+  {% include "booking/_inquiry_content.html" %}
 </section>
 
-{% if teaser_photos %}
-<section class="home-gallery">
-  <div class="wrap">
-    <div class="section-heading">
-      <div>
-        <p class="eyebrow">{{ t.home_gallery_eyebrow }}</p>
-        <h2>{{ t.home_gallery_title }}</h2>
-      </div>
-      <a class="text-link" href="{% url 'booking:gallery' %}">{{ t.home_gallery_link }} <span aria-hidden="true">→</span></a>
-    </div>
-    <div class="teaser-grid">
-      {% for photo in teaser_photos %}
-        <a href="{% url 'booking:gallery' %}">
-          <img src="{{ photo.image.url }}" alt="{% if lang == 'en' and photo.title_en %}{{ photo.title_en }}{% elif photo.title_de %}{{ photo.title_de }}{% else %}{{ t.site_name }}{% endif %}" loading="lazy">
-        </a>
-      {% endfor %}
+<section class="wrap stay-section" id="gastgeber" tabindex="-1" aria-labelledby="gastgeber-title">
+  <div class="stay-heading"><div><p class="eyebrow">{{ t.holiday_hosts_kicker }}</p><h2 id="gastgeber-title">{{ t.nav_hosts }}</h2></div></div>
+  {% include "booking/_hosts_content.html" %}
+</section>
+
+<section class="wrap stay-section" id="anreise" tabindex="-1" aria-labelledby="anreise-title">
+  <div class="stay-heading"><div><p class="eyebrow">Haus Flora · Bodensdorf</p><h2 id="anreise-title">{{ t.arrival_title }}</h2></div></div>
+  {% include "booking/_arrival_content.html" %}
+</section>
+
+<section class="wrap stay-section" id="regeln" tabindex="-1" aria-labelledby="regeln-title">
+  <div class="stay-heading"><h2 id="regeln-title">{{ t.rules_title }}</h2></div>
+  {% include "booking/_rules_content.html" %}
+</section>
+
+<section class="wrap stay-section" id="fragen" tabindex="-1" aria-labelledby="fragen-title">
+  <div class="stay-heading"><h2 id="fragen-title">{{ t.faq_title }}</h2></div>
+  {% include "booking/_faq_content.html" %}
+</section>
+
+<section class="wrap stay-section stay-explore" id="entdecken" tabindex="-1" aria-labelledby="entdecken-title">
+  <div class="holiday-story">
+    {% if lake_photo %}<figure class="holiday-story-photo">{% include "booking/_holiday_photo.html" with photo=lake_photo %}<figcaption>{{ t.holiday_lake_caption }}</figcaption></figure>{% endif %}
+    <div><p class="eyebrow">{{ t.holiday_moments_kicker }}</p><h2 id="entdecken-title">{{ t.region_title }}</h2><p>{{ t.region_intro }}</p>
+      <nav class="home-guide-links" aria-label="{{ t.region_title }}">{% for item in guide_navigation %}<a href="{{ item.url }}"><span>{{ item.label }}</span><span class="nav-symbol">{% include "booking/_navigation_icon.html" with icon=item.name %}</span></a>{% endfor %}</nav>
     </div>
   </div>
 </section>
-{% endif %}
-
-<section class="wrap home-section stay-grid">
-  <div class="stay-card stay-card-price">
-    <p class="eyebrow">{{ t.home_price_eyebrow }}</p>
-    <h2>{{ t.home_price_title }}</h2>
-    <p>{{ t.home_price_text }}</p>
-    <div class="price-highlight">
-      <span>{{ t.home_from }}</span>
-      <strong>{{ site_settings.price_2_adults|floatformat:"0" }} €</strong>
-      <span>{{ t.prices_per_night }}</span>
-    </div>
-    <a class="text-link" href="{% url 'booking:prices' %}">{{ t.home_price_link }} <span aria-hidden="true">→</span></a>
-  </div>
-  <div class="stay-card stay-card-location">
-    <p class="eyebrow">{{ t.home_location_eyebrow }}</p>
-    <h2>{{ t.home_location_title }}</h2>
-    <p>{{ t.home_location_text }}</p>
-    <ul class="compact-list">
-      {% for item in t.home_location_facts %}<li>{{ item }}</li>{% endfor %}
-    </ul>
-    <a class="text-link" href="{% url 'booking:area' %}">{{ t.home_location_link }} <span aria-hidden="true">→</span></a>
-  </div>
-</section>
-
-<section class="home-cta">
-  <div class="wrap home-cta-inner">
-    <div>
-      <p class="eyebrow">{{ t.home_cta_eyebrow }}</p>
-      <h2>{{ t.home_cta_title }}</h2>
-      <p>{{ t.home_cta_text }}</p>
-    </div>
-    <a class="btn btn-light" href="{% url 'booking:inquiry' %}">{{ t.home_cta }}</a>
-  </div>
-</section>
+{% include "booking/_gallery_lightbox.html" %}
+{% include "booking/_booking_reviews.html" %}
+{% include "booking/_amenities_dialog.html" %}
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'js/gallery.js' %}" defer></script>
+<script src="{% static 'js/amenities.js' %}" defer></script>
+<script src="{% static 'js/calendar.js' %}" defer></script>
+{% if preview_mode %}<script src="{% static 'js/preview-inquiry.js' %}" defer></script>{% endif %}
 {% endblock %}

@@ -40,21 +40,32 @@
       months: ["Jänner", "Februar", "März", "April", "Mai", "Juni", "Juli",
                "August", "September", "Oktober", "November", "Dezember"],
       weekdays: ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"],
-      combo: "Diese Personenkombination ist leider nicht buchbar (max. 3 Erwachsene, max. 4 Personen).",
-      minNights: "Mindestaufenthalt: {n} Nächte."
+      combo: "Diese Personenkombination ist leider nicht buchbar (3 Erwachsene ohne Kinder oder bis zu 2 Erwachsene mit Kindern).",
+      taxAge: "Bitte wählt aus, wie viele der Kinder 16 oder 17 Jahre alt sind.",
+      minNights: "Mindestaufenthalt: {n} Nächte.",
+      chooseArrival: "Wählt euren Anreisetag aus.",
+      chooseDeparture: "Anreise: {date}. Wählt jetzt euren Abreisetag aus.",
+      selectedDates: "Ausgewählt: {arrival} bis {departure}. Füllt jetzt eure Angaben unten aus.",
+      arrivalAction: "Als Anreise auswählen", departureAction: "Als Abreise auswählen"
     },
     en: {
       months: ["January", "February", "March", "April", "May", "June", "July",
                "August", "September", "October", "November", "December"],
       weekdays: ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
-      combo: "This combination of guests is not bookable (max. 3 adults, max. 4 guests).",
-      minNights: "Minimum stay: {n} nights."
+      combo: "This combination of guests is not bookable (3 adults without children or up to 2 adults with children).",
+      taxAge: "Please select how many of the children are aged 16 or 17.",
+      minNights: "Minimum stay: {n} nights.",
+      chooseArrival: "Choose your arrival date.",
+      chooseDeparture: "Arrival: {date}. Now choose your departure date.",
+      selectedDates: "Selected: {arrival} to {departure}. Now fill in your details below.",
+      arrivalAction: "Choose as arrival", departureAction: "Choose as departure"
     }
   };
 
-  var lang = (calRoot && calRoot.dataset.lang) === "en" ? "en" : "de";
+  var configRoot = form || calRoot;
+  var lang = (configRoot && configRoot.dataset.lang) === "en" ? "en" : "de";
   var TXT = STRINGS[lang];
-  var minNights = calRoot ? parseInt(calRoot.dataset.minNights || "5", 10) : 5;
+  var minNights = configRoot ? parseInt(configRoot.dataset.minNights || "5", 10) : 5;
 
   function euro(value) {
     return value.toLocaleString(lang === "en" ? "en-IE" : "de-AT", {
@@ -69,6 +80,18 @@
     var departure = form.querySelector('[name="departure"]').value;
     var adults = form.querySelector('[name="adults"]').value;
     var children = form.querySelector('[name="children"]').value;
+    var taxAgeField = form.querySelector('[name="taxable_children"]');
+    var taxAgeRow = document.getElementById("taxable-children-row");
+    var childCount = parseInt(children, 10);
+    if (taxAgeField && taxAgeRow) {
+      taxAgeRow.hidden = childCount === 0;
+      taxAgeField.disabled = childCount === 0;
+      taxAgeField.required = childCount > 0;
+      Array.from(taxAgeField.options).forEach(function (option) {
+        option.disabled = option.value !== "" && parseInt(option.value, 10) > childCount;
+      });
+      if (childCount === 0 || parseInt(taxAgeField.value, 10) > childCount) taxAgeField.value = "";
+    }
     var cleaningFee = parseFloat(form.dataset.cleaningFee || "0");
     var cityTaxRate = parseFloat(form.dataset.cityTax || "0");
     var box = document.getElementById("price-box");
@@ -79,6 +102,11 @@
     var perNight = prices[adults + "_" + children];
     if (perNight === undefined) {
       warn.textContent = TXT.combo;
+      warn.hidden = false;
+      return;
+    }
+    if (childCount > 0 && (!taxAgeField || taxAgeField.value === "")) {
+      warn.textContent = TXT.taxAge;
       warn.hidden = false;
       return;
     }
@@ -93,7 +121,8 @@
       return;
     }
     var accommodation = nights * parseFloat(perNight);
-    var cityTax = nights * parseInt(adults, 10) * cityTaxRate;
+    var taxableChildren = taxAgeField && taxAgeField.value !== "" ? parseInt(taxAgeField.value, 10) : 0;
+    var cityTax = nights * (parseInt(adults, 10) + taxableChildren) * cityTaxRate;
     var total = accommodation + cleaningFee + cityTax;
     document.getElementById("price-night").textContent = euro(parseFloat(perNight));
     document.getElementById("price-nights").textContent = nights;
@@ -105,7 +134,7 @@
   }
 
   if (form) {
-    ["arrival", "departure", "adults", "children"].forEach(function (name) {
+    ["arrival", "departure", "adults", "children", "taxable_children"].forEach(function (name) {
       var field = form.querySelector('[name="' + name + '"]');
       if (field) field.addEventListener("change", updatePrice);
     });
@@ -196,28 +225,33 @@
       var key = iso(d);
       cell.textContent = day;
 
+      var departureAllowed = blocked[key] && selArrival && !selDeparture &&
+          d > selArrival && nightsFree(selArrival, d);
       if (d < today) {
         cell.className = "past";
-      } else if (blocked[key]) {
+      } else if (blocked[key] && !departureAllowed) {
         cell.className = "booked";
       } else {
-        cell.className = "free";
-        cell.tabIndex = 0;
+        cell.className = departureAllowed ? "booked departure-ok" : "free";
+        cell.textContent = "";
+        var dayButton = document.createElement("button");
+        dayButton.type = "button";
+        dayButton.className = "calendar-day";
+        dayButton.dataset.date = key;
+        dayButton.textContent = day;
+        dayButton.setAttribute("aria-label", d.toLocaleDateString(lang === "en" ? "en-GB" : "de-AT", {
+          weekday: "long", day: "numeric", month: "long", year: "numeric"
+        }) + ": " + (selArrival && !selDeparture ? TXT.departureAction : TXT.arrivalAction));
+        dayButton.setAttribute("aria-pressed", String(Boolean(
+          (selArrival && key === iso(selArrival)) || (selDeparture && key === iso(selDeparture)))));
         (function (dd) {
-          cell.addEventListener("click", function () { onDayClick(dd); });
-          cell.addEventListener("keydown", function (e) {
-            if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onDayClick(dd); }
+          dayButton.addEventListener("click", function () {
+            onDayClick(dd);
+            var newButton = calRoot.querySelector('[data-date="' + iso(dd) + '"]');
+            if (newButton) newButton.focus({preventScroll: true});
           });
         })(d);
-      }
-      // Abreisetag ist wählbar, auch wenn an ihm ein neuer Gast anreisen kann
-      if (blocked[key] && selArrival && !selDeparture && d > selArrival &&
-          nightsFree(selArrival, d)) {
-        cell.className = "booked departure-ok";
-        cell.tabIndex = 0;
-        (function (dd) {
-          cell.addEventListener("click", function () { onDayClick(dd); });
-        })(d);
+        cell.appendChild(dayButton);
       }
       if (selArrival && key === iso(selArrival)) cell.classList.add("selected");
       if (selDeparture && key === iso(selDeparture)) cell.classList.add("selected");
@@ -234,6 +268,13 @@
     wrapEl.innerHTML = "";
     wrapEl.appendChild(monthTable(viewMonth));
     wrapEl.appendChild(monthTable(addMonths(viewMonth, 1)));
+    var hint = document.getElementById("cal-selection-hint");
+    function dateLabel(date) {
+      return date.toLocaleDateString(lang === "en" ? "en-GB" : "de-AT", {day: "numeric", month: "long", year: "numeric"});
+    }
+    if (hint) hint.textContent = !selArrival ? TXT.chooseArrival :
+      !selDeparture ? TXT.chooseDeparture.replace("{date}", dateLabel(selArrival)) :
+      TXT.selectedDates.replace("{arrival}", dateLabel(selArrival)).replace("{departure}", dateLabel(selDeparture));
     document.getElementById("cal-prev").disabled = viewMonth <= startOfMonth(today);
     document.getElementById("cal-next").disabled = addMonths(viewMonth, 1) >= maxMonth;
   }

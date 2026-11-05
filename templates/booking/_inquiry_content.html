@@ -1,0 +1,104 @@
+{% load l10n %}
+<h3>{{ t.calendar_title }}</h3>
+  <p>{{ t.calendar_steps }}</p>
+  {% if site_settings.calendar_visible %}
+    <div id="calendar"
+         data-availability-url="{% url 'booking:availability' %}"
+         data-lang="{{ lang }}"
+         data-min-nights="{{ min_nights }}">
+      <div class="cal-nav">
+        <button type="button" id="cal-prev" aria-label="{{ t.calendar_previous }}">← {{ t.calendar_previous }}</button>
+        <button type="button" id="cal-next" aria-label="{{ t.calendar_next }}">{{ t.calendar_next }} →</button>
+      </div>
+      <p class="calendar-selection" id="cal-selection-hint" role="status" aria-live="polite"></p>
+      <div class="cal-months" id="cal-months"></div>
+{% if not preview_mode %}
+      <p class="cal-legend">
+        <span class="dot free"></span> {{ t.calendar_legend_free }}
+        <span class="dot booked"></span> {{ t.calendar_legend_booked }}
+      </p>
+      <p class="hint">{{ t.calendar_hint }}</p>
+{% endif %}
+    </div>
+  {% else %}
+    <p class="empty">{{ t.calendar_hidden }}</p>
+  {% endif %}
+
+  {% if site_settings.booking_enabled %}
+  <h3>{% if preview_mode %}{{ t.email_inquiry_title }}{% else %}{{ t.form_step_title }}{% endif %}</h3>
+  <p>{% if preview_mode %}{{ t.email_inquiry_hint }}{% else %}{{ t.form_step_hint }}{% endif %}</p>
+  <{% if preview_mode %}div{% else %}form method="post" action="{% url 'booking:home' %}#anfrage"{% endif %} class="inquiry-form" id="inquiry-form"
+        data-prices='{{ price_table_json }}'
+        data-lang="{{ lang }}" data-min-nights="{{ min_nights }}"
+        data-cleaning-fee="{{ site_settings.cleaning_fee|unlocalize }}"
+        data-city-tax="{{ site_settings.city_tax|unlocalize }}">
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+      <div class="form-errors">{{ form.non_field_errors }}</div>
+    {% endif %}
+    {% if form.form_ts.errors or form.website.errors %}
+      <div class="form-errors">{{ form.form_ts.errors }}{{ form.website.errors }}</div>
+    {% endif %}
+
+    <div class="form-grid">
+      <label>{{ t.form_arrival }}
+        {{ form.arrival }}
+        {{ form.arrival.errors }}
+      </label>
+      <label>{{ t.form_departure }}
+        {{ form.departure }}
+        {{ form.departure.errors }}
+      </label>
+      <label>{{ t.form_adults }}
+        {{ form.adults }}
+        {{ form.adults.errors }}
+      </label>
+      <label>{{ t.form_children }}
+        {{ form.children }}
+        {{ form.children.errors }}
+      </label>
+      <div class="span-2" id="taxable-children-row">
+        <label>{{ t.form_taxable_children }}
+          {{ form.taxable_children }}{{ form.taxable_children.errors }}
+        </label>
+        <small id="tax-age-hint">{{ t.form_tax_age_hint }}</small>
+      </div>
+      <label class="span-2">{{ t.form_name }}
+        {{ form.name }}
+        {{ form.name.errors }}
+      </label>
+      <label class="span-2">{{ t.form_email }}
+        {{ form.email }}
+        {{ form.email.errors }}
+      </label>
+      <label class="span-2">{{ t.form_message }}
+        {{ form.message }}
+        {{ form.message.errors }}
+      </label>
+    </div>
+
+    {# Honeypot: für Menschen unsichtbar, Bots füllen es aus #}
+    <div class="hp-field" aria-hidden="true">
+      <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+    </div>
+    <input type="hidden" name="form_ts" value="{{ form_ts }}">
+
+    <div class="price-box" id="price-box" hidden>
+      <strong>{{ t.form_price_label }}</strong>
+      <dl class="price-breakdown">
+        <div><dt>{{ t.form_accommodation }} (<span id="price-nights"></span> {{ t.form_nights }} × <span id="price-night"></span>)</dt><dd id="price-accommodation"></dd></div>
+        <div><dt>{{ t.form_cleaning }}</dt><dd id="price-cleaning"></dd></div>
+        <div><dt>{{ t.form_city_tax }}</dt><dd id="price-tax"></dd></div>
+        <div class="price-total-row"><dt>{{ t.form_estimated_total }}</dt><dd id="price-total"></dd></div>
+      </dl>
+      <small>{{ t.form_price_hint }}</small>
+    </div>
+    <div class="price-box warn" id="combo-warning" hidden></div>
+
+    <p class="hint">{{ t.faq_booking_a }} <a href="{% url 'booking:home' %}#zahlung">{{ t.payment_title }}</a> · <a href="{% url 'booking:privacy' %}">{{ t.footer_privacy }}</a></p>
+    {% if preview_mode %}<button type="button" id="preview-inquiry-button" data-email="{{ site_settings.public_email }}" class="btn">{{ t.email_inquiry_button }}</button><p class="email-help"><a href="mailto:{{ site_settings.public_email }}">{{ site_settings.public_email }}</a></p><p id="inquiry-feedback" role="status" class="form-errors" hidden></p>{% else %}<button type="submit" class="btn">{{ t.form_submit }}</button>{% endif %}
+  </{% if preview_mode %}div{% else %}form{% endif %}>
+  {% else %}
+    <p class="empty">{{ t.booking_disabled }}</p>
+  {% endif %}

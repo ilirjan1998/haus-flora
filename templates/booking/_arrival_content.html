@@ -1,0 +1,4 @@
+<div class="arrival-simple">
+  <p class="arrival-simple-address"><span aria-hidden="true">📍</span> {{ site_settings.property_address }}</p>
+  <a class="btn holiday-primary arrival-route-button" href="https://www.google.com/maps/dir/?api=1&amp;destination={{ site_settings.property_address|urlencode }}" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">🗺️</span> {% if lang == 'en' %}Plan your route{% else %}Route planen{% endif %}</a>
+</div>

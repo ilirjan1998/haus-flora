@@ -3,36 +3,59 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}{{ t.site_name }} – {{ t.tagline }}{% endblock %}</title>
-  <meta name="description" content="{% block meta_description %}{{ t.home_meta }}{% endblock %}">
-  <meta name="theme-color" content="#0d3440">
+  <title>{{ seo.title }}</title>
+  <meta name="description" content="{{ seo.description }}">
+  <meta name="robots" content="{{ seo.robots }}">
+  <meta name="theme-color" content="#183f36">
+  <link rel="icon" href="{% static 'images/favicon.svg' %}" type="image/svg+xml" sizes="any">
+  {% if seo.canonical %}
+  <link rel="canonical" href="{{ seo.canonical }}">
+  {% for alternate in seo.alternates %}<link rel="alternate" hreflang="{{ alternate.lang }}" href="{{ alternate.url }}">{% endfor %}
+  <link rel="alternate" hreflang="x-default" href="{{ seo.default_url }}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Haus Flora">
+  <meta property="og:title" content="{{ seo.title }}">
+  <meta property="og:description" content="{{ seo.description }}">
+  <meta property="og:url" content="{{ seo.canonical }}">
+  <meta property="og:locale" content="{{ seo.locale }}">
+  <meta property="og:locale:alternate" content="{{ seo.alternate_locale }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ seo.title }}">
+  <meta name="twitter:description" content="{{ seo.description }}">
+  {% if seo.image %}
+  <meta property="og:image" content="{{ seo.image.url }}">
+  <meta property="og:image:width" content="{{ seo.image.width }}">
+  <meta property="og:image:height" content="{{ seo.image.height }}">
+  <meta property="og:image:alt" content="{{ seo.image.alt }}">
+  <meta name="twitter:image" content="{{ seo.image.url }}">
+  <meta name="twitter:image:alt" content="{{ seo.image.alt }}">
+  {% endif %}
+  {% endif %}
+  {% if seo.verification %}<meta name="google-site-verification" content="{{ seo.verification }}">{% endif %}
+  {% if seo.json_ld %}<script type="application/ld+json">{{ seo.json_ld|safe }}</script>{% endif %}
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/usability.css' %}">
+  <link rel="stylesheet" href="{% static 'css/holiday.css' %}">
+  <link rel="stylesheet" href="{% static 'css/navigation.css' %}">
+  <link rel="stylesheet" href="{% static 'css/gallery-viewer.css' %}">
+  <link rel="stylesheet" href="{% static 'css/retreat.css' %}">
 </head>
 <body>
+<a class="skip-link" href="#main-content">{{ t.skip_content }}</a>
+<div class="site-layout">
 <header class="site-header">
   <div class="wrap header-inner">
     <a class="brand" href="{% url 'booking:home' %}">
-      <span class="brand-name">{{ t.site_name }}</span>
+      <span class="brand-lockup"><svg class="brand-sun" viewBox="0 0 40 40" fill="none" aria-hidden="true"><circle cx="20" cy="20" r="8" stroke="currentColor" stroke-width="2.5"/><path d="M20 2v5m0 26v5M2 20h5m26 0h5M7 7l4 4m18 18 4 4M7 33l4-4m18-18 4-4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg><span class="brand-name">{{ t.site_name }}</span></span>
       <span class="brand-sub">{{ t.tagline }}</span>
     </a>
-    <button class="nav-toggle" aria-expanded="false" aria-controls="mainnav"
-            onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded')==='true'?'false':'true'); document.getElementById('mainnav').classList.toggle('open');">
-      <span></span><span></span><span></span>
-      <span class="sr-only">{% if lang == "en" %}Menu{% else %}Menü{% endif %}</span>
-    </button>
-    <nav id="mainnav" class="main-nav">
-      <a href="{% url 'booking:apartment' %}">{{ t.nav_apartment }}</a>
-      <a href="{% url 'booking:gallery' %}">{{ t.nav_gallery }}</a>
-      <a href="{% url 'booking:prices' %}">{{ t.nav_prices }}</a>
-      <a href="{% url 'booking:area' %}">{{ t.nav_area }}</a>
-      <a href="{% url 'booking:rules' %}">{{ t.nav_rules }}</a>
-      <a class="nav-cta" href="{% url 'booking:inquiry' %}">{{ t.nav_inquiry }}</a>
-      <a class="lang-switch" href="{% switch_language_url %}">{{ t.lang_switch }}</a>
-    </nav>
+    <a class="header-language" data-preserve-hash href="{% switch_language_url %}" lang="{% if lang == 'en' %}de{% else %}en{% endif %}">{{ t.lang_switch }} {% include "booking/_language_flag.html" %}</a>
   </div>
 </header>
 
-<main>
+{% include "booking/_site_navigation.html" %}
+<div class="site-page-content">
+<main id="main-content" tabindex="-1">
   {% block content %}{% endblock %}
 </main>
 
@@ -41,6 +64,19 @@
     <path d="M0,30 C240,60 480,0 720,25 C960,50 1200,10 1440,35 L1440,60 L0,60 Z"></path>
   </svg>
   <div class="wrap footer-inner">
+    {% if request.resolver_match.url_name == "home" %}
+    <section class="footer-help">
+      <h2>{{ t.help_title }}</h2>
+      <p>{{ t.help_text }}</p>
+      <div class="contact-actions">
+        <a class="btn btn-light" href="mailto:{{ site_settings.public_email }}">{{ t.email_us }} <span aria-hidden="true">→</span></a>
+        {% if site_settings.public_phone %}<a class="btn btn-light" href="tel:{{ site_settings.public_phone|cut:' ' }}">{{ t.call_us }}: {{ site_settings.public_phone }}</a>{% endif %}
+        <a class="btn btn-ghost" href="{% url 'booking:home' %}#anfrage">{{ t.action_inquiry }} <span aria-hidden="true">→</span></a>
+      </div>
+      <p class="email-help">{{ t.email_app_hint }} <a href="mailto:{{ site_settings.public_email }}">{{ site_settings.public_email }}</a></p>
+      <a class="footer-home" href="{% url 'booking:home' %}">← {{ t.action_home }}</a>
+    </section>
+    {% endif %}
     <p>© {% now "Y" %} {{ t.site_name }} · Bodensdorf, Ossiacher See</p>
     <nav class="footer-nav">
       <a href="{% url 'booking:imprint' %}">{{ t.footer_imprint }}</a>
@@ -48,6 +84,11 @@
     </nav>
   </div>
 </footer>
+</div>
+</div>
+<a class="mobile-menu-return" href="#site-navigation">{% include "booking/_navigation_icon.html" with icon="menu" %} {{ t.sidebar_menu_return }}</a>
+<button class="back-to-menu" type="button" hidden aria-label="{% if lang == 'en' %}Back to main menu{% else %}Zurück zum Hauptmenü{% endif %}" title="{% if lang == 'en' %}Back to main menu{% else %}Zurück zum Hauptmenü{% endif %}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20V4m-6 6 6-6 6 6"/></svg></button>
+<script src="{% static 'js/navigation.js' %}" defer></script>
 {% block scripts %}{% endblock %}
 </body>
 </html>

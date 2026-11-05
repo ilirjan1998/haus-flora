@@ -1,0 +1,27 @@
+<svg viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" data-arrival-icon="{{ icon }}">
+{% if icon == 'car' %}
+  <path d="M12 28 17 16a5 5 0 0 1 5-3h20a5 5 0 0 1 5 3l5 12" fill="#fff"/>
+  <path d="m20 17-4 11h32l-4-11Z" fill="currentColor" fill-opacity=".13" stroke="none"/>
+  <rect x="10" y="27" width="44" height="20" rx="7" fill="#fff"/>
+  <path d="M15 47v5h7v-5m20 0v5h7v-5M7 25h6m38 0h6M26 41h12M25 57h14"/>
+  <path d="M16 34h7m18 0h7" stroke="#c57736" stroke-width="4"/>
+{% elif icon == 'rail' %}
+  <rect x="15" y="7" width="34" height="42" rx="9" fill="#fff"/>
+  <path d="M26 13h12"/>
+  <rect x="20" y="19" width="24" height="16" rx="3" fill="currentColor" fill-opacity=".12"/>
+  <path d="M32 19v16M23 49l-7 10m25-10 7 10M21 55h22"/>
+  <circle cx="23" cy="42" r="2" fill="#c57736" stroke="none"/><circle cx="41" cy="42" r="2" fill="#c57736" stroke="none"/>
+{% elif icon == 'plane' %}
+  <path d="M29 11c0-6 6-6 6 0v14l21 13v6L35 36v14l7 5v4l-10-3-10 3v-4l7-5V36L8 44v-6l21-13Z" fill="#fff"/>
+  <path d="M32 14v16" stroke="#c57736"/>
+  <path d="M7 13h10m-6-5h6M48 17h9m-4-5h4" opacity=".45"/>
+{% elif icon == 'home' %}
+  <path d="M49 26c0 15-17 31-17 31S15 41 15 26a17 17 0 0 1 34 0Z" fill="#fff"/>
+  <path d="m23 26 9-8 9 8M25 25v12h14V25M30 37v-8h4v8"/>
+  <path d="M22 59h20" opacity=".4"/>
+{% elif icon == 'clock' %}
+  <circle cx="32" cy="32" r="23" fill="#fff"/>
+  <path d="M32 17v15l10 6" stroke-width="3"/>
+  <path d="M32 9v4m23 19h-4M32 55v-4M9 32h4" opacity=".5"/>
+{% endif %}
+</svg>

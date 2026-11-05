@@ -1,0 +1,50 @@
+<section class="wrap stay-section guest-reviews" id="bewertungen" tabindex="-1" aria-labelledby="reviews-title">
+  <div class="stay-heading">
+    <div>
+      <p class="eyebrow">{% if lang == 'en' %}Guest reviews{% else %}Gästebewertungen{% endif %}</p>
+      <h2 id="reviews-title">{% if lang == 'en' %}What our guests enjoyed{% else %}Das sagen unsere Gäste{% endif %}</h2>
+    </div>
+  </div>
+  <p class="reviews-intro">{% if lang == 'en' %}A selection of {{ selected_booking_reviews|length }} guest reviews rated 10/10, briefly summarised.{% else %}Eine Auswahl von {{ selected_booking_reviews|length }} Gästebewertungen mit 10/10 Punkten, kurz zusammengefasst.{% endif %}</p>
+  <div class="guest-reviews-grid">
+    {% for review in selected_booking_reviews %}
+    <article class="guest-review-card" aria-labelledby="review-title-{{ forloop.counter }}">
+      <div class="guest-review-top">
+        <span class="guest-review-avatar" aria-hidden="true">{{ review.name|first }}</span>
+        <div class="guest-review-person"><strong>{{ review.name }}</strong><span>{{ review.country }}</span></div>
+        <span class="guest-review-score" aria-label="{% if lang == 'en' %}Rating: {{ review.score }} out of 10{% else %}Bewertung: {{ review.score }} von 10{% endif %}">{{ review.score }}<small>/10</small></span>
+      </div>
+      <h3 id="review-title-{{ forloop.counter }}">{{ review.title }}</h3>
+      <p>{{ review.summary }}</p>
+      <div class="guest-review-meta"><span>{% if lang == 'en' %}Reviewed on{% else %}Bewertet am{% endif %}</span><time datetime="{{ review.date|date:'Y-m-d' }}">{{ review.date|date:'d.m.Y' }}</time></div>
+    </article>
+    {% endfor %}
+  </div>
+{% if additional_guest_voices %}
+  <div class="guest-voices" role="group" aria-labelledby="guest-voices-title">
+    <h3 id="guest-voices-title">{% if lang == 'en' %}More guest experiences{% else %}Weitere Gästestimmen{% endif %}</h3>
+    <div class="guest-reviews-grid">
+{% for voice in additional_guest_voices %}
+      <article class="guest-review-card guest-voice-card" aria-labelledby="voice-title-{{ forloop.counter }}">
+        <div class="guest-review-top">
+          <span class="guest-review-avatar" aria-hidden="true">{{ voice.name|first }}</span>
+          <div class="guest-review-person"><strong>{{ voice.name }}</strong><span>{{ voice.country }}</span></div>
+        </div>
+        <h4 id="voice-title-{{ forloop.counter }}">{{ voice.title }}</h4>
+        <blockquote lang="{{ voice.excerpt_language }}"><p>{% if lang == 'en' %}“{% else %}„{% endif %}{{ voice.excerpt }} […]{% if lang == 'en' %}”{% else %}“{% endif %}</p></blockquote>
+        <div class="guest-review-meta"><span>{% if lang == 'en' %}Original excerpt · {{ voice.language_label }}{% else %}Übersetzter Auszug · Original: {{ voice.language_label }}{% endif %}</span></div>
+      </article>
+{% endfor %}
+    </div>
+  </div>
+{% endif %}
+  <div class="reviews-footer">
+    <a class="btn btn-outline" href="#anfrage">{% if lang == 'en' %}Enquire directly with us{% else %}Urlaub direkt bei uns anfragen{% endif %}</a>
+  </div>
+  <details class="reviews-source-note">
+    <summary>{% if lang == 'en' %}About this selection{% else %}Zur Auswahl und Quelle{% endif %}</summary>
+    <p>{% if lang == 'en' %}Source: Booking.com. The 10/10 shown above refers to the {{ selected_booking_reviews|length }} selected reviews displayed here, not the overall score across all guest reviews. The texts accompanying these four scores are summaries written for this website, not direct quotes. Individual scores and dates were checked against the reviews reproduced by Planet of Hotels.{% else %}Quelle: Booking.com. Die oben angezeigten 10/10 Punkte beziehen sich auf die {{ selected_booking_reviews|length }} hier ausgewählten Bewertungen, nicht auf die Gesamtbewertung aller Gäste. Die Texte zu diesen vier Punktbewertungen wurden für diese Website zusammengefasst und sind keine wörtlichen Zitate. Einzelbewertungen und Datum wurden anhand der bei Planet of Hotels wiedergegebenen Bewertungen geprüft.{% endif %}</p>
+    <p>{% if lang == 'en' %}Nelly and Ciurla are shown with short, verbatim excerpts in their original languages, checked against publicly visible Booking.com excerpts on 21 October 2026. […] marks omitted text. Their individual scores and review dates could not be confirmed and are not displayed.{% else %}Von Nelly und Ciurla werden kurze Originalauszüge in deutscher Übersetzung gezeigt, geprüft anhand öffentlich sichtbarer Booking.com-Auszüge am 21.10.2026. Die Übersetzungen folgen dem Originalwortlaut ohne inhaltliche Ergänzungen. […] kennzeichnet ausgelassenen Text. Ihre persönlichen Punktzahlen und Bewertungsdaten konnten nicht bestätigt werden und werden nicht angezeigt.{% endif %}</p>
+    <p>{% if lang == 'en' %}Rating checked on{% else %}Bewertungsstand vom{% endif %} <time datetime="{{ booking_rating.checked_on|date:'Y-m-d' }}">{{ booking_rating.checked_on|date:'d.m.Y' }}</time>. {% if lang == 'en' %}The score is not updated automatically.{% else %}Die Bewertung wird nicht automatisch aktualisiert.{% endif %}</p>
+  </details>
+</section>
