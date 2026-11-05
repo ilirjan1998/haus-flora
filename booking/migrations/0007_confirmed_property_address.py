@@ -1,7 +1,7 @@
 from django.db import migrations, models
 
 
-ADDRESS = "Jägerweg 20, 9551 Bodensdorf"
+ADDRESS = "Bodensdorf am Ossiacher See"
 
 
 def fill_property_address(apps, schema_editor):
