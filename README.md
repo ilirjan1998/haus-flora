@@ -20,7 +20,56 @@ Umgebungsbilder, Radfahren und Urlaubslinks.
 
 ![Days out around Lake Ossiach and Gerlitzen Alpe](docs/screenshots/region-en.jpg)
 
-## Schnellstart (lokal)
+## In VS Code klonen und öffnen
+
+Installiere zuerst **Git** und **Visual Studio Code**. Öffne dann in VS Code
+über **Terminal → Neues Terminal** ein Terminal und führe diese Befehle aus:
+
+```bash
+git clone https://github.com/ilirjan1998/haus-flora.git
+cd haus-flora
+code .
+```
+
+Falls `code .` nicht erkannt wird, öffne den geklonten Ordner `haus-flora`
+über **Datei → Ordner öffnen** in VS Code.
+Alternativ kannst du auf GitHub **Code → Download ZIP** wählen und die ZIP-Datei entpacken.
+
+## Windows: automatisch einrichten und starten
+
+**Vorher Python installieren:** Du benötigst **Python 3.11 oder neuer**.
+Lade es von [python.org](https://www.python.org/downloads/windows/) herunter
+und aktiviere im Installer **„Add python.exe to PATH“** (bzw. **„Add Python to PATH“**).
+Öffne VS Code nach der Installation neu.
+
+Starte anschließend **`START_WINDOWS.bat` per Doppelklick** im Projektordner.
+Im PowerShell-Terminal von VS Code geht es auch so:
+
+```powershell
+.\START_WINDOWS.bat
+```
+
+Die Datei erstellt die virtuelle Umgebung `.venv`, installiert die benötigten Pakete,
+legt eine fehlende `.env` mit einem zufälligen Secret Key an, aktualisiert die Datenbank,
+lädt die mitgelieferten Fotos bei leerer Fototabelle und erstellt die Bildvarianten.
+Anschließend startet sie die lokale Website.
+Eine vorhandene `.env` und vorhandene Fotoeinträge werden beibehalten.
+Für die Paketinstallation brauchst du eine Internetverbindung.
+
+Öffne danach **http://127.0.0.1:8000/de/** im Browser.
+Lass das Terminalfenster geöffnet; **Strg+C** beendet den Server.
+Auch bei späteren Starts kannst du dieselbe BAT-Datei verwenden.
+
+Optional kannst du in einem zweiten Terminal ein eigenes Admin-Konto anlegen:
+
+```powershell
+.\.venv\Scripts\python.exe manage.py createsuperuser
+```
+
+Danach meldest du dich unter http://127.0.0.1:8000/admin/ an.
+E-Mail-Versand und Booking.com-Anbindung richtest du bei Bedarf wie unten beschrieben ein.
+
+## Manuelle Einrichtung (alternativ)
 
 ```bash
 # 1. In den Projektordner wechseln und virtuelle Umgebung anlegen
