@@ -173,10 +173,10 @@ class SiteSettings(models.Model):
     public_email = models.EmailField("Öffentliche E-Mail", default="markajflore@gmail.com")
     public_phone = models.CharField("Öffentliche Telefonnummer", max_length=40, blank=True)
     property_address = models.CharField("Adresse der Unterkunft", max_length=250, blank=True,
-        default="Jägerweg 20, 9551 Bodensdorf",
+        default="Bodensdorf am Ossiacher See",
         help_text="Straße, Hausnummer, PLZ und Ort. Wird für die Anreise angezeigt.")
     operator_name = models.CharField("Vollständiger Betreibername", max_length=200, blank=True, default="Flore Markaj")
-    operator_address = models.TextField("Betreiberanschrift", blank=True, default="Jägerweg 20\n9551 Bodensdorf\nÖsterreich")
+    operator_address = models.TextField("Betreiberanschrift", blank=True, default="Bodensdorf am Ossiacher See")
     host_name = models.CharField("Anzeigename der Gastgeber", max_length=150, default="Familie Markaj")
     host_photo = models.ImageField("Gastgeberfoto", upload_to="gastgeber/", blank=True)
     host_intro_de = models.TextField("Vorstellung (Deutsch)", blank=True)
