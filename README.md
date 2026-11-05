@@ -12,8 +12,8 @@ Anfrageformular mit automatischer Preisberechnung und Adminbereich.
 ### Ferienwohnung
 ![Wohnung und Ausstattung](docs/screenshots/wohnung.jpg)
 
-### Preise
-![Preise und Buchungsinformationen](docs/screenshots/preise.jpg)
+### Discover the region (English)
+![Days out around Lake Ossiach and Gerlitzen Alpe](docs/screenshots/region-en.jpg)
 
 ## Schnellstart (lokal)
 
