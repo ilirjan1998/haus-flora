@@ -369,7 +369,7 @@ TEXTS = {
         "form_name": "Name",
         "form_email": "E-mail",
         "form_message": "Message (optional)",
-        "form_submit": "Send inquiry",
+        "form_submit": "Send booking request",
         "form_price_label": "Price summary",
         "form_accommodation": "Accommodation",
         "form_cleaning": "Final cleaning",
