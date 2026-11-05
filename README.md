@@ -13,6 +13,11 @@ Anfrageformular mit automatischer Preisberechnung und Adminbereich.
 ![Wohnung und Ausstattung](docs/screenshots/wohnung.jpg)
 
 ### Discover the region (English)
+
+Der Screenshot zeigt die Unterseite **„Days out & things to do“** unter `/en/umgebung/`.
+**„Discover the region“** ist ein Menü mit mehreren Unterseiten: Ausflüge & Freizeit,
+Umgebungsbilder, Radfahren und Urlaubslinks.
+
 ![Days out around Lake Ossiach and Gerlitzen Alpe](docs/screenshots/region-en.jpg)
 
 ## Schnellstart (lokal)
